@@ -19,6 +19,9 @@ public class LogActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log);
 
+        //hide actionbar
+        getSupportActionBar().hide();
+
         // TODO: Render fragment
         // Render fragment
         renderFragment(true);
