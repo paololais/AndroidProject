@@ -34,7 +34,7 @@
             android:shadowRadius="8"
             android:text="Zena Party"
             android:textColor="@color/white"
-            android:textSize="35sp"
+            android:textSize="40dp"
             android:textStyle="bold" />
     </LinearLayout>
 

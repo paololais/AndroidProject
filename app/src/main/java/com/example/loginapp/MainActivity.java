@@ -36,31 +36,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         auth = FirebaseAuth.getInstance();
-        userTextView = findViewById(R.id.userTextView);
-        logoutButton = findViewById(R.id.logoutButton);
         user = auth.getCurrentUser();
         if (user == null){
             Intent intent = new Intent(getApplicationContext(), LogActivity.class);
             startActivity(intent);
             finish();
         }
-        else {
-            userTextView.setText(user.getEmail());
-        }
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.home);
 
 
 
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), LogActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item)
