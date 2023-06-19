@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     BottomNavigationView bottomNavigationView;
     HomeFragment homeFragment = new HomeFragment();
-    MapFragment mapFragment = new MapFragment();
+    MapsFragment mapFragment = new MapsFragment();
     SettingsFragment settingsFragment = new SettingsFragment();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
