@@ -1,4 +1,4 @@
-package com.example.loginapp;
+package com.example.zenaparty;
 
 import android.os.Bundle;
 

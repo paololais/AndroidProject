@@ -37,9 +37,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:829154308715:android:1ab9988c463fbd6493f72e",
+        "mobilesdk_app_id": "1:829154308715:android:a5d17a1e7454f49693f72e",
         "android_client_info": {
-          "package_name": "com.example.mynewapp"
+          "package_name": "com.example.zenaparty"
         }
       },
       "oauth_client": [

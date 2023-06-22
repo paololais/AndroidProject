@@ -1,4 +1,4 @@
-package com.example.loginapp;
+package com.example.zenaparty;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
