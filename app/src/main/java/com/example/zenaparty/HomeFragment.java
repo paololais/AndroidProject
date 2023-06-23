@@ -76,16 +76,15 @@ public class HomeFragment extends Fragment {
                 DatePickerDialog dialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        Calendar selectedDate = Calendar.getInstance();
-                        selectedDate.set(year, month, dayOfMonth);
+                        calendar.set(year, month, dayOfMonth);
 
                         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE d MMMM", Locale.getDefault());
-                        String formattedDate = dateFormat.format(selectedDate.getTime());
+                        String formattedDate = dateFormat.format(calendar.getTime());
                         tvSelectDate.setText(formattedDate);
 
                         // metodo per filtrare gli eventi in base alla data selezionata
                         SimpleDateFormat newFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                        String newFormattedDate = newFormat.format(selectedDate.getTime());
+                        String newFormattedDate = newFormat.format(calendar.getTime());
                         filterEventsByDate(newFormattedDate);
                     }
                 },year, month,day);
