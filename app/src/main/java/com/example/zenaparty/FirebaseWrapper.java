@@ -106,5 +106,6 @@ public class FirebaseWrapper {
             assert this.isAuthenticated();
             return this.getUser().getUid();
         }
+
     }
 }
