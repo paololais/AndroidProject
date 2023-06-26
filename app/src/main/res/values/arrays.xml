@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="filter_options">
+        <item>Tutte</item>
+        <item>Musica</item>
+        <item>Sport</item>
+        <item>Disco e feste</item>
+        <item>Sagre</item>
+        <item>Altro</item>
+    </string-array>
+</resources>

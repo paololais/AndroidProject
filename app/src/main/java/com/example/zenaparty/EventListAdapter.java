@@ -17,17 +17,19 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
 
     ArrayList<MyEvent> list;
 
+    private final EventListInterface eventListInterface;
 
-    public EventListAdapter(Context context, ArrayList<MyEvent> list) {
+    public EventListAdapter(Context context, ArrayList<MyEvent> list, EventListInterface eventListInterface) {
         this.context = context;
         this.list = list;
+        this.eventListInterface = eventListInterface;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.event_item_layout,parent,false);
-        return  new MyViewHolder(v);
+        return new MyViewHolder(v, eventListInterface);
     }
 
     @Override
@@ -50,7 +52,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
 
         TextView event_name, time, location, type, price;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView, EventListInterface eventListInterface) {
             super(itemView);
 
             event_name = itemView.findViewById(R.id.eventName);
@@ -59,6 +61,18 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
             type = itemView.findViewById(R.id.eventType);
             price = itemView.findViewById(R.id.eventPrice);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (eventListInterface != null){
+                        int pos = getAdapterPosition();
+
+                        if(pos != RecyclerView.NO_POSITION){
+                            eventListInterface.onItemClick(pos);
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -66,4 +80,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
         this.list = eventList;
     }
 
+    public ArrayList<MyEvent> getList() {
+        return list;
+    }
 }
