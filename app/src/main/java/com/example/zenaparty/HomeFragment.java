@@ -7,11 +7,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.Spinner;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,12 +34,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class HomeFragment extends Fragment implements EventListInterface{
+public class HomeFragment extends Fragment
+        implements EventListInterface, FilterDialogListener {
     private TextView tvSelectDate;
     private TextView tvNoEvents;
-    private Button btnIncreaseDay;
-    private Button btnDecreaseDay;
-    private Spinner spinnerFilter;
     RecyclerView recyclerView;
     DatabaseReference database;
     EventListAdapter myAdapter;
@@ -55,6 +51,8 @@ public class HomeFragment extends Fragment implements EventListInterface{
     final int month = calendar.get(Calendar.MONTH);
     final int day = calendar.get(Calendar.DAY_OF_MONTH);
 
+    boolean isParty = true, isSagre = true, isMusica = true, isSport = true, isAltro = true;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -67,18 +65,11 @@ public class HomeFragment extends Fragment implements EventListInterface{
         super.onViewCreated(view, savedInstanceState);
         tvSelectDate = view.findViewById(R.id.tvSelectDate);
         tvNoEvents = view.findViewById(R.id.tvNoEvents);
-        btnIncreaseDay = view.findViewById(R.id.btnIncreaseDay);
-        btnDecreaseDay = view.findViewById(R.id.btnDecreaseDay);
-        spinnerFilter = view.findViewById(R.id.spinnerFilter);
+        Button btnIncreaseDay = view.findViewById(R.id.btnIncreaseDay);
+        Button btnDecreaseDay = view.findViewById(R.id.btnDecreaseDay);
+        ImageButton btnFilter = view.findViewById(R.id.btnFilter);
 
-        // Crea un ArrayAdapter con le opzioni del filtro
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.filter_options, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-// Imposta l'adapter per il Spinner
-        spinnerFilter.setAdapter(adapter);
-
-        sharedPreferences = getActivity().getSharedPreferences("SavedValues", Context.MODE_PRIVATE);
+        sharedPreferences = requireActivity().getSharedPreferences("SavedValues", Context.MODE_PRIVATE);
 
         recyclerView = view.findViewById(R.id.eventsRecyclerView);
         database = FirebaseDatabase.getInstance("https://pmappfirsttry-default-rtdb.europe-west1.firebasedatabase.app/").getReference("events");
@@ -104,6 +95,13 @@ public class HomeFragment extends Fragment implements EventListInterface{
             tvSelectDate.setText(formattedDate);
             newFormattedDate = sharedPreferences.getString("newFormattedDate", "");
 
+            //get filters
+            isParty = sharedPreferences.getBoolean("party", true);
+            isSagre = sharedPreferences.getBoolean("sagre", true);
+            isMusica = sharedPreferences.getBoolean("musica", true);
+            isSport = sharedPreferences.getBoolean("sport", true);
+            isAltro = sharedPreferences.getBoolean("altro", true);
+
             Gson gson = new Gson();
             String json = sharedPreferences.getString("eventList", "");
             Type type = new TypeToken<ArrayList<MyEvent>>() {}.getType();
@@ -121,7 +119,7 @@ public class HomeFragment extends Fragment implements EventListInterface{
             recyclerView.setAdapter(myAdapter);
             myAdapter.notifyDataSetChanged();
 
-            filterEventsByDate(newFormattedDate);
+            filterEventsByType();
         }
 
 
@@ -141,7 +139,7 @@ public class HomeFragment extends Fragment implements EventListInterface{
                         // metodo per filtrare gli eventi in base alla data selezionata
                         SimpleDateFormat newFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
                         newFormattedDate = newFormat.format(calendar.getTime());
-                        filterEventsByDate(newFormattedDate);
+                       filterEventsByType();
                     }
                 },year, month,day);
                 dialog.show();
@@ -160,7 +158,7 @@ public class HomeFragment extends Fragment implements EventListInterface{
                 // metodo per filtrare gli eventi in base alla data selezionata
                 SimpleDateFormat newFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
                 newFormattedDate = newFormat.format(calendar.getTime());
-                filterEventsByDate(newFormattedDate);
+                filterEventsByType();
             }
         });
         // Listener per il pulsante per decrementare il giorno
@@ -175,10 +173,23 @@ public class HomeFragment extends Fragment implements EventListInterface{
                 // metodo per filtrare gli eventi in base alla data selezionata
                 SimpleDateFormat newFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
                 newFormattedDate = newFormat.format(calendar.getTime());
-                filterEventsByDate(newFormattedDate);
+                filterEventsByType();
+            }
+        });
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openFilterDialog();
             }
         });
     }
+
+    private void openFilterDialog(){
+        FilterDialogFragment dialog = new FilterDialogFragment();
+        dialog.setOnInputListener(this);
+        dialog.show(requireActivity().getSupportFragmentManager(), "filter dialog");
+    }
+
 
     private void filterEventsByDate(String selectedDate) {
         ArrayList<MyEvent> filteredList = new ArrayList<>();
@@ -198,12 +209,38 @@ public class HomeFragment extends Fragment implements EventListInterface{
             tvNoEvents.setVisibility(View.GONE);
         }
     }
-    private void openDialog() {
-        FilterDialogFragment exampleDialog = new FilterDialogFragment();
-        exampleDialog.show(getActivity().getSupportFragmentManager(), "example dialog");
+
+    private void filterEventsByType() {
+        ArrayList<MyEvent> filteredList = new ArrayList<>();
+
+        for (MyEvent event : list) {
+            if (event.getDate().equals(newFormattedDate) &&
+                    ((isParty && event.getType().equals("Disco e Feste")) ||
+                    (isSagre && event.getType().equals("Sagre")) ||
+                    (isMusica && event.getType().equals("Musica")) ||
+                    (isSport && event.getType().equals("Sport")) ||
+                    (isAltro && event.getType().equals("Altro")))) {
+                filteredList.add(event);
+            } else if (event.getDate().equals(newFormattedDate) &&
+                    ((isAltro && !event.getType().equals("Disco e Feste") &&
+                            !event.getType().equals("Sagre") &&
+                            !event.getType().equals("Musica") &&
+                            !event.getType().equals("Sport")))) {
+                filteredList.add(event);
+            }
+        }
+
+        myAdapter.setEventList(filteredList);
+        myAdapter.notifyDataSetChanged();
+
+        if (filteredList.isEmpty()) {
+            tvNoEvents.setVisibility(View.VISIBLE);
+        } else {
+            tvNoEvents.setVisibility(View.GONE);
+        }
     }
 
-    @Override
+        @Override
     public void onResume() {
         super.onResume();
 
@@ -221,6 +258,13 @@ public class HomeFragment extends Fragment implements EventListInterface{
         Gson gson = new Gson();
         String json = gson.toJson(list);
         editor.putString("eventList", json);
+
+        //salva filtri
+        editor.putBoolean("party", isParty);
+        editor.putBoolean("sagre", isSagre);
+        editor.putBoolean("musica", isMusica);
+        editor.putBoolean("sport", isSport);
+        editor.putBoolean("altro", isAltro);
 
         editor.apply();
         super.onPause();
@@ -257,11 +301,21 @@ public class HomeFragment extends Fragment implements EventListInterface{
         bundle.putParcelable("event", selectedEvent);
         eventOpenedFragment.setArguments(bundle);
 
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getParentFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.flFragment, eventOpenedFragment);
-        fragmentTransaction.addToBackStack(null); // Aggiunge il fragment alla back stack, se desiderato
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
+    @Override
+    public void onCheckboxSelected(boolean isParty, boolean isSagre, boolean isMusica, boolean isSport, boolean isAltro) {
+        this.isParty = isParty;
+        this.isSagre = isSagre;
+        this.isMusica = isMusica;
+        this.isSport = isSport;
+        this.isAltro = isAltro;
+
+        filterEventsByType();
+    }
 }

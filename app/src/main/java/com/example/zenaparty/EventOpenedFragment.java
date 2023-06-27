@@ -1,26 +1,17 @@
 package com.example.zenaparty;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.TextView;
-
 public class EventOpenedFragment extends Fragment {
-    private ImageButton btnClose;
-    private TextView eventName;
-    private TextView description;
-    private TextView price;
-    private TextView type;
-    private TextView time;
-    private TextView username;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,13 +29,14 @@ public class EventOpenedFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        btnClose = view.findViewById(R.id.btnClose);
-        eventName = view.findViewById(R.id.eventName);
-        description = view.findViewById(R.id.eventDescription);
-        price = view.findViewById(R.id.eventPrice);
-        type = view.findViewById(R.id.eventType);
-        time = view.findViewById(R.id.eventTime);
-        username = view.findViewById(R.id.userName);
+        ImageButton btnClose = view.findViewById(R.id.btnClose);
+        TextView eventName = view.findViewById(R.id.eventName);
+        TextView description = view.findViewById(R.id.eventDescription);
+        TextView price = view.findViewById(R.id.eventPrice);
+        TextView type = view.findViewById(R.id.eventType);
+        TextView date = view.findViewById(R.id.eventDate);
+        TextView time = view.findViewById(R.id.eventTime);
+        TextView username = view.findViewById(R.id.userName);
 
         // Recupera i dati dell'evento dall'argomento bundle
         Bundle bundle = getArguments();
@@ -55,6 +47,7 @@ public class EventOpenedFragment extends Fragment {
                 description.setText(event.getDescription());
                 price.setText(String.valueOf(event.getPrice()));
                 type.setText(event.getType());
+                date.setText(event.getDate());
                 time.setText(event.getTime());
                 username.setText(event.getUsername());
             }

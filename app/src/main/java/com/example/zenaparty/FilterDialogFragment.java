@@ -1,84 +1,72 @@
 package com.example.zenaparty;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatDialogFragment;
 
-public class FilterDialogFragment extends AppCompatDialogFragment {
-    private CheckBox cbAll;
+import java.util.Objects;
+
+public class FilterDialogFragment extends androidx.fragment.app.DialogFragment{
+    private static final String TAG = "DialogFragment";
+
     private CheckBox cbMusic;
     private CheckBox cbSport;
     private CheckBox cbParties;
     private CheckBox cbSagre;
     private CheckBox cbOther;
 
+    private FilterDialogListener listener;
+
     @NonNull
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View dialogView = inflater.inflate(R.layout.filter_dialog, container,false);
 
-        LayoutInflater inflater = requireActivity().getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.filter_dialog, null);
-
-        cbAll = dialogView.findViewById(R.id.cbAll);
         cbMusic = dialogView.findViewById(R.id.cbMusic);
         cbSport = dialogView.findViewById(R.id.cbSport);
         cbParties = dialogView.findViewById(R.id.cbParties);
         cbSagre = dialogView.findViewById(R.id.cbSagre);
         cbOther = dialogView.findViewById(R.id.cbOther);
 
-        // Imposta il listener per la checkbox "Tutte"
-        cbAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    // Se la checkbox "Tutte" è selezionata, deseleziona le altre checkbox
-                    cbMusic.setChecked(false);
-                    cbSport.setChecked(false);
-                    cbParties.setChecked(false);
-                    cbSagre.setChecked(false);
-                    cbOther.setChecked(false);
-                }
-            }
-        });
+        TextView mActionCancel = dialogView.findViewById(R.id.action_cancel);
+        TextView mActionOk = dialogView.findViewById(R.id.action_ok);
 
-        builder.setView(dialogView)
-                .setTitle("Categoria eventi")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        mActionCancel.setOnClickListener(
+                new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        boolean filterAll = cbAll.isChecked();
-                        boolean filterMusic = cbMusic.isChecked();
-                        boolean filterSport = cbSport.isChecked();
-                        boolean filterParties = cbParties.isChecked();
-                        boolean filterSagre = cbSagre.isChecked();
-                        boolean filterOther = cbOther.isChecked();
-
-                    }
-                }).setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // Azione da eseguire quando si fa clic su annulla
+                    public void onClick(View v) {
+                        Log.d(TAG, "onClick: closing dialog");
+                        Objects.requireNonNull(getDialog()).dismiss();
                     }
                 });
-        return builder.create();
+
+        mActionOk.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d(TAG, "onClick: capturing input");
+                        boolean filterParties = cbParties.isChecked();
+                        boolean filterFestivals = cbSagre.isChecked();
+                        boolean filterMusic = cbMusic.isChecked();
+                        boolean filterSport = cbSport.isChecked();
+                        boolean filterOther = cbOther.isChecked();
+
+                        if (listener != null) {
+                            listener.onCheckboxSelected(filterParties, filterFestivals, filterMusic, filterSport, filterOther);
+                        }
+                        Objects.requireNonNull(getDialog()).dismiss();
+                    }
+                });
+        return dialogView;
     }
 
-
-    private void applyFilter() {
-        boolean filterAll = cbAll.isChecked();
-        boolean filterMusic = cbMusic.isChecked();
-        boolean filterSport = cbSport.isChecked();
-        boolean filterParties = cbParties.isChecked();
-        boolean filterFestivals = cbSagre.isChecked();
-        boolean filterOther = cbOther.isChecked();
+    public void setOnInputListener(FilterDialogListener listener) {
+        this.listener = listener;
     }
 }
