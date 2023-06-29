@@ -36,20 +36,6 @@ public abstract class LogFragment extends Fragment {
     }
 
     protected void initArguments() {
-        /* NOTE: You can pass some args to the fragment in the Bundle object
-        In the caller (Activity) context:
-            ```
-            Bundle bundle = new Bundle();
-            String myMessage = "This is a message";
-            bundle.putString("param_name", myMessage );
-            ```
-        In the onCreate of the Fragment class:
-            ```
-            if (getArguments() != null) {
-                mParam1 = getArguments().getString("param_name");
-            }
-            ```
-        */
         if (getArguments() != null) {
             this.callbackName = getArguments().getString(ARG_PARAM1);
             this.callbackPrms = (Class[]) getArguments().getSerializable(ARG_PARAM2);

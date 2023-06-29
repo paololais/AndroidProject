@@ -10,13 +10,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener{
     FirebaseAuth auth;
-    Button logoutButton;
-    TextView userTextView;
     FirebaseUser user;
 
     BottomNavigationView bottomNavigationView;
