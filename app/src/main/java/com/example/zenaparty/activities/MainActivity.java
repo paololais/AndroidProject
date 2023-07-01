@@ -9,15 +9,17 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.zenaparty.fragments.AddEventFragment;
 import com.example.zenaparty.fragments.HomeFragment;
 import com.example.zenaparty.fragments.MapsFragment;
 import com.example.zenaparty.R;
-import com.example.zenaparty.fragments.SettingsFragment;
+import com.example.zenaparty.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener{
     FirebaseAuth auth;
     Button logoutButton;
     TextView userTextView;
@@ -26,7 +28,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     BottomNavigationView bottomNavigationView;
     HomeFragment homeFragment = new HomeFragment();
     MapsFragment mapFragment = new MapsFragment();
-    SettingsFragment settingsFragment = new SettingsFragment();
+    AddEventFragment addEventFragment = new AddEventFragment();
+    ProfileFragment profileFragment = new ProfileFragment();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             startActivity(intent);
             finish();
         }
-        bottomNavigationView.setOnNavigationItemSelectedListener(this);
+        bottomNavigationView.setOnItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.home);
 
 
@@ -70,10 +73,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         .commit();
                 return true;
 
-            case R.id.settings:
+            case R.id.addEvent:
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.flFragment, settingsFragment)
+                        .replace(R.id.flFragment, addEventFragment)
+                        .commit();
+                return true;
+
+            case R.id.profile:
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.flFragment, profileFragment)
                         .commit();
                 return true;
         }
