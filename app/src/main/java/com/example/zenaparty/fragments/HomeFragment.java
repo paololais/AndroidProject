@@ -1,4 +1,4 @@
-package com.example.zenaparty;
+package com.example.zenaparty.fragments;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.zenaparty.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

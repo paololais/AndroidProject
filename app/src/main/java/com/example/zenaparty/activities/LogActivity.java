@@ -1,4 +1,4 @@
-package com.example.zenaparty;
+package com.example.zenaparty.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -8,6 +8,11 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
+
+import com.example.zenaparty.fragments.LogFragment;
+import com.example.zenaparty.fragments.LoginFragment;
+import com.example.zenaparty.R;
+import com.example.zenaparty.fragments.RegisterFragment;
 
 public class LogActivity extends AppCompatActivity{
     private static final String TAG = LogActivity.class.getCanonicalName();

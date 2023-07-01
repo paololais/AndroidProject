@@ -1,4 +1,4 @@
-package com.example.zenaparty;
+package com.example.zenaparty.fragments;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -11,6 +11,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+
+import com.example.zenaparty.models.FirebaseWrapper;
+import com.example.zenaparty.R;
+import com.example.zenaparty.activities.LogActivity;
 
 
 public class RegisterFragment extends LogFragment {

@@ -1,4 +1,4 @@
-package com.example.zenaparty;
+package com.example.zenaparty.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.zenaparty.R;
+import com.example.zenaparty.activities.LogActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 

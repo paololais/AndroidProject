@@ -1,4 +1,4 @@
-package com.example.zenaparty;
+package com.example.zenaparty.models;
 
 import android.util.Log;
 
