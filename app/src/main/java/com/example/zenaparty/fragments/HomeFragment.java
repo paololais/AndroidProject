@@ -1,4 +1,4 @@
-package com.example.zenaparty;
+package com.example.zenaparty.fragments;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -20,6 +20,11 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.zenaparty.adapters.EventListAdapter;
+import com.example.zenaparty.models.EventListInterface;
+import com.example.zenaparty.models.FilterDialogListener;
+import com.example.zenaparty.models.MyEvent;
+import com.example.zenaparty.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

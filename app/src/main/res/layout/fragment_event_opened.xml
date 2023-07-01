@@ -7,7 +7,7 @@
     android:layout_margin="10dp"
     android:background="@drawable/gradient1"
     android:orientation="vertical"
-    tools:context=".EventOpenedFragment">
+    tools:context=".fragments.EventOpenedFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

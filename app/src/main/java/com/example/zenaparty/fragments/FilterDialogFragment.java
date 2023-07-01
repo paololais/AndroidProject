@@ -1,4 +1,4 @@
-package com.example.zenaparty;
+package com.example.zenaparty.fragments;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +9,9 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+
+import com.example.zenaparty.models.FilterDialogListener;
+import com.example.zenaparty.R;
 
 import java.util.Objects;
 
