@@ -18,7 +18,7 @@ import com.example.zenaparty.activities.LogActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class SettingsFragment extends Fragment {
+public class ProfileFragment extends Fragment {
     Button logoutButton;
     TextView userTextView;
     FirebaseUser user;
