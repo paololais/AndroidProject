@@ -1,4 +1,4 @@
-package com.example.zenaparty;
+package com.example.zenaparty.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +9,10 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.zenaparty.fragments.HomeFragment;
+import com.example.zenaparty.fragments.MapsFragment;
+import com.example.zenaparty.R;
+import com.example.zenaparty.fragments.SettingsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;

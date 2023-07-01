@@ -1,4 +1,4 @@
-package com.example.zenaparty;
+package com.example.zenaparty.fragments;
 
 import android.os.Bundle;
 
