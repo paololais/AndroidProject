@@ -1,6 +1,8 @@
 package com.example.zenaparty.models;
 
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 
@@ -9,6 +11,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -81,22 +89,49 @@ public class FirebaseWrapper {
             this.auth.signOut();
         }
 
-        public void signIn(String email, String password, Callback callback) {
+        public void signIn(String email, String password, ProgressBar progressBar, Callback callback) {
+            progressBar.setVisibility(View.VISIBLE);
             this.auth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             callback.invoke(task.isSuccessful());
+                            progressBar.setVisibility(View.GONE);
                         }
                     });
         }
 
-        public void signUp(String email, String password, Callback callback) {
+        public void signUp(String email, String password, String username, ProgressBar progressBar, Callback callback) {
+            progressBar.setVisibility(View.VISIBLE);
             this.auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        callback.invoke(task.isSuccessful());
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = auth.getCurrentUser();
+                            if (user != null) {
+                                String userId = user.getUid();
+                                String userEmail = user.getEmail();
+
+                                // Salva email nel database "users"
+                                DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
+                                usersRef.child(userId).child("email").setValue(userEmail);
+
+                                // Salva l'username nel database degli usernames
+                                DatabaseReference usernamesRef = FirebaseDatabase.getInstance().getReference("usernames");
+                                usernamesRef.child(username).setValue(userId);
+
+                                // Callback con esito positivo
+                                callback.invoke(true);
+                            } else {
+                                // Gestione dell'errore
+                                callback.invoke(false);
+                            }
+                        } else {
+                            // Gestione dell'errore
+                            callback.invoke(false);
+                        }
+                        progressBar.setVisibility(View.GONE);
                     }
                 });
         }
@@ -106,6 +141,5 @@ public class FirebaseWrapper {
             assert this.isAuthenticated();
             return this.getUser().getUid();
         }
-
     }
 }

@@ -1,12 +1,17 @@
 package com.example.zenaparty.fragments;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -45,6 +50,11 @@ public class LoginFragment extends LogFragment {
                 public void onClick(View view) {
                     EditText email = externalView.findViewById(R.id.etEmail);
                     EditText password = externalView.findViewById(R.id.etPassword);
+                    ProgressBar progressBar = externalView.findViewById(R.id.progressBar);
+
+                    // hide keyboard
+                    InputMethodManager manager = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
                     if (email.getText().toString().isEmpty() || password.getText().toString().isEmpty()) {
                         // TODO: Better error handling + remove this hardcoded strings
@@ -58,6 +68,7 @@ public class LoginFragment extends LogFragment {
                     auth.signIn(
                             email.getText().toString(),
                             password.getText().toString(),
+                            progressBar,
                             FirebaseWrapper.Callback
                                     .newInstance(LoginFragment.this.requireActivity(),
                                             LoginFragment.this.callbackName,

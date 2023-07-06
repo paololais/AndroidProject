@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,11 +21,11 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.zenaparty.R;
 import com.example.zenaparty.adapters.EventListAdapter;
 import com.example.zenaparty.models.EventListInterface;
 import com.example.zenaparty.models.FilterDialogListener;
 import com.example.zenaparty.models.MyEvent;
-import com.example.zenaparty.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,6 +44,7 @@ public class HomeFragment extends Fragment
         implements EventListInterface, FilterDialogListener {
     private TextView tvSelectDate;
     private TextView tvNoEvents;
+    private ProgressBar progressBar;
     RecyclerView recyclerView;
     DatabaseReference database;
     EventListAdapter myAdapter;
@@ -73,6 +75,8 @@ public class HomeFragment extends Fragment
         Button btnIncreaseDay = view.findViewById(R.id.btnIncreaseDay);
         Button btnDecreaseDay = view.findViewById(R.id.btnDecreaseDay);
         ImageButton btnFilter = view.findViewById(R.id.btnFilter);
+        progressBar = view.findViewById(R.id.progressBar);
+
 
         sharedPreferences = requireActivity().getSharedPreferences("SavedValues", Context.MODE_PRIVATE);
 
@@ -275,6 +279,9 @@ public class HomeFragment extends Fragment
         super.onPause();
     }
     public void readDatabase(DatabaseReference db){
+        // show loading
+        progressBar.setVisibility(View.VISIBLE);
+
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -287,6 +294,9 @@ public class HomeFragment extends Fragment
                 myAdapter.notifyDataSetChanged();
 
                 filterEventsByDate(newFormattedDate);
+
+                // hide loading
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override

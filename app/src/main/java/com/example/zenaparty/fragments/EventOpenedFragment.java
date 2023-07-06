@@ -106,41 +106,23 @@ public class EventOpenedFragment extends Fragment {
         //necessario per impostare elemento grafico
         setBtnFavoriteValue(btnFavorite, favoritesRef);
 
-        btnClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                requireActivity().onBackPressed();
+        btnClose.setOnClickListener(view1 -> requireActivity().onBackPressed());
+
+        btnFavorite.setOnClickListener(view12 -> {
+            if(!isFavorite){
+                isFavorite = true;
+                favoritesRef.child(eventId).setValue(true);
+                btnFavorite.setImageResource(R.drawable.ic_favorite_true_foreground);
+
+            } else {
+                isFavorite = false;
+                favoritesRef.child(eventId).setValue(false);
+                btnFavorite.setImageResource(R.drawable.ic_favorite_foreground);
             }
         });
 
-        btnFavorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(!isFavorite){
-                    isFavorite = true;
-                    favoritesRef.child(eventId).setValue(true);
-                    btnFavorite.setImageResource(R.drawable.ic_favorite_true_foreground);
-
-                } else {
-                    isFavorite = false;
-                    favoritesRef.child(eventId).setValue(false);
-                    btnFavorite.setImageResource(R.drawable.ic_favorite_foreground);
-                }
-            }
-        });
-
-        btnAddToCalendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addEventToCalendar();
-            }
-        });
-        btnMaps.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openLocationInMaps();
-            }
-        });
+        btnAddToCalendar.setOnClickListener(view13 -> addEventToCalendar());
+        btnMaps.setOnClickListener(view14 -> openLocationInMaps());
     }
 
     private void openLocationInMaps() {
@@ -223,14 +205,16 @@ public class EventOpenedFragment extends Fragment {
 
         startActivity(intent);
 
-        /*// Verifica se esiste un'app che può gestire l'Intent
+        /*
+        // Verifica se esiste un'app che può gestire l'Intent
         if (intent.resolveActivity(requireContext().getPackageManager()) != null) {
             // Avvia l'Intent per aprire l'app di Google Maps
             startActivity(intent);
         } else {
             // Non è disponibile app di maps: messaggio di errore
             Toast.makeText(getContext(), "App Google Calendar non disponibile", Toast.LENGTH_SHORT).show();
-        }*/
+        }
+        */
     }
 
     void convertDateAndTimeInMillis(){
