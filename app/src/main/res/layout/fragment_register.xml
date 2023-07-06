@@ -39,14 +39,15 @@
 
     <LinearLayout
         android:layout_width="300dp"
-        android:layout_height="460dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/login_border"
         android:gravity="center"
+        android:padding="15dp"
         android:orientation="vertical">
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="390dp">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -74,7 +75,7 @@
                     android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
+                    android:layout_margin="10dp"
                     android:background="@drawable/edit_text_border"
                     android:ems="10"
                     android:hint="Email"
@@ -87,7 +88,7 @@
                     android:id="@+id/etUsername"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
+                    android:layout_margin="10dp"
                     android:background="@drawable/edit_text_border"
                     android:ems="10"
                     android:hint="Username"
@@ -100,8 +101,7 @@
                     android:id="@+id/etPassword1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_margin="10dp"
                     android:background="@drawable/edit_text_border"
                     android:ems="10"
                     android:hint="Password"
@@ -114,8 +114,7 @@
                     android:id="@+id/etPassword2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_margin="10dp"
                     android:background="@drawable/edit_text_border"
                     android:ems="10"
                     android:hint="Confirm Password"
