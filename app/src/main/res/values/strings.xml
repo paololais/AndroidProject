@@ -4,4 +4,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="goToLogin">Do you already have an account? Click here and login!</string>
     <string name="goToRegister">Not registered? Click here to create a new account!</string>
+    <string name="places_prompt">Test</string>
 </resources>
