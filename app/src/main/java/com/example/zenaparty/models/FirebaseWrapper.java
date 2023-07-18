@@ -6,6 +6,7 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 
+import com.example.zenaparty.adapters.EventListAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -20,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 // NOTE: With firebase we have to do a network request --> We need to add the permission in the AndroidManifest.xml
 //      -> ref: https://developer.android.com/training/basics/network-ops/connecting
@@ -104,36 +106,36 @@ public class FirebaseWrapper {
         public void signUp(String email, String password, String username, ProgressBar progressBar, Callback callback) {
             progressBar.setVisibility(View.VISIBLE);
             this.auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = auth.getCurrentUser();
-                            if (user != null) {
-                                String userId = user.getUid();
-                                String userEmail = user.getEmail();
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = auth.getCurrentUser();
+                                if (user != null) {
+                                    String userId = user.getUid();
+                                    String userEmail = user.getEmail();
 
-                                // Salva email nel database "users"
-                                DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
-                                usersRef.child(userId).child("email").setValue(userEmail);
+                                    // Salva email nel database "users"
+                                    DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
+                                    usersRef.child(userId).child("email").setValue(userEmail);
 
-                                // Salva l'username nel database degli usernames
-                                DatabaseReference usernamesRef = FirebaseDatabase.getInstance().getReference("usernames");
-                                usernamesRef.child(username).setValue(userId);
+                                    // Salva l'username nel database degli usernames
+                                    DatabaseReference usernamesRef = FirebaseDatabase.getInstance().getReference("usernames");
+                                    usernamesRef.child(username).setValue(userId);
 
-                                // Callback con esito positivo
-                                callback.invoke(true);
+                                    // Callback con esito positivo
+                                    callback.invoke(true);
+                                } else {
+                                    // Gestione dell'errore
+                                    callback.invoke(false);
+                                }
                             } else {
                                 // Gestione dell'errore
                                 callback.invoke(false);
                             }
-                        } else {
-                            // Gestione dell'errore
-                            callback.invoke(false);
+                            progressBar.setVisibility(View.GONE);
                         }
-                        progressBar.setVisibility(View.GONE);
-                    }
-                });
+                    });
         }
 
         public String getUid() {
@@ -147,6 +149,7 @@ public class FirebaseWrapper {
     //database
     public static class Database {
         private static final DatabaseReference databaseReference = FirebaseDatabase.getInstance("https://pmappfirsttry-default-rtdb.europe-west1.firebasedatabase.app/").getReference("events_test");
+
         public Database() {
 
         }
@@ -189,5 +192,116 @@ public class FirebaseWrapper {
                         }
                     });
         }
+
+        public static void getCurrentUserFavorites(ArrayList<MyEvent> list, EventListAdapter myAdapter, ProgressBar progressBar) {
+            // Mostra il progresso di caricamento
+            progressBar.setVisibility(View.VISIBLE);
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+
+            if (auth.getCurrentUser() != null) {
+                String currentUserId = auth.getCurrentUser().getUid();
+                DatabaseReference usersReference = FirebaseDatabase.getInstance("https://pmappfirsttry-default-rtdb.europe-west1.firebasedatabase.app/")
+                        .getReference("users");
+
+                Query query = usersReference.child(currentUserId).child("preferiti").orderByKey();
+
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        list.clear();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            // Ottieni l'ID dell'evento preferito dall'utente
+                            String eventId = dataSnapshot.getKey();
+
+                            // Cerca l'evento corrispondente nell'elenco degli eventi
+                            DatabaseReference eventsReference = FirebaseDatabase.getInstance("https://pmappfirsttry-default-rtdb.europe-west1.firebasedatabase.app/")
+                                    .getReference("events");
+                            Query eventQuery = eventsReference.orderByChild("event_id").equalTo(Integer.parseInt(eventId));
+                            eventQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    for (DataSnapshot eventDataSnapshot : snapshot.getChildren()) {
+                                        MyEvent event = eventDataSnapshot.getValue(MyEvent.class);
+                                        list.add(event);
+                                    }
+
+                                    // Aggiorna l'adattatore e nascondi il progresso di caricamento
+                                    myAdapter.setEventList(list);
+                                    myAdapter.notifyDataSetChanged();
+                                    progressBar.setVisibility(View.GONE);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    progressBar.setVisibility(View.GONE);
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
+            }
+        }
+
+        public static void getUserEventsInserted(ArrayList<MyEvent> list, EventListAdapter myAdapter, ProgressBar progressBar) {
+            // Mostra il progresso di caricamento
+            progressBar.setVisibility(View.VISIBLE);
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+
+            if (auth.getCurrentUser() != null) {
+                String currentUserId = auth.getCurrentUser().getUid();
+                DatabaseReference usersReference = FirebaseDatabase.getInstance("https://pmappfirsttry-default-rtdb.europe-west1.firebasedatabase.app/")
+                        .getReference("users");
+
+                Query query = usersReference.child(currentUserId).child("myevents").orderByKey();
+
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        list.clear();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            // Ottieni l'ID dell'evento preferito dall'utente
+                            String eventId = dataSnapshot.getKey();
+
+                            // Cerca l'evento corrispondente nell'elenco degli eventi
+                            DatabaseReference eventsReference = FirebaseDatabase.getInstance("https://pmappfirsttry-default-rtdb.europe-west1.firebasedatabase.app/")
+                                    .getReference("events");
+                            Query eventQuery = eventsReference.orderByChild("event_id").equalTo(Integer.parseInt(eventId));
+                            eventQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    for (DataSnapshot eventDataSnapshot : snapshot.getChildren()) {
+                                        MyEvent event = eventDataSnapshot.getValue(MyEvent.class);
+                                        list.add(event);
+                                    }
+
+                                    // Aggiorna l'adattatore e nascondi il progresso di caricamento
+                                    myAdapter.setEventList(list);
+                                    myAdapter.notifyDataSetChanged();
+                                    progressBar.setVisibility(View.GONE);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    progressBar.setVisibility(View.GONE);
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
+            }
+        }
+
     }
 }
