@@ -12,4 +12,12 @@
     <color name="blueBlack">#111f28</color>
     <color name="tanAccent">#e3cdb3</color>
 
+    <color name="Primary">#1B023B</color>
+    <color name="Secondary">#FF03DAc5</color>
+
+    <color name="night_mode">#6124B1</color>
+    <color name="notification">#13B2C3</color>
+    <color name="GIALLO">#E6A326</color>
+    <color name="rosso">#D95F69</color>
+
 </resources>
