@@ -29,6 +29,19 @@ public class MyEvent implements Parcelable {
         username = in.readString();
     }
 
+    public MyEvent(String event_name, String date, String location, String time, String type, String price, String description, String username) {
+        this.event_id = (long) -1;
+        this.event_name = event_name;
+        this.date = date;
+        this.location = location;
+        this.time = time;
+        this.type = type;
+        this.price = price;
+        this.description = description;
+        this.username = username;
+    }
+
+
     public static final Creator<MyEvent> CREATOR = new Creator<MyEvent>() {
         @Override
         public MyEvent createFromParcel(Parcel in) {
@@ -74,6 +87,10 @@ public class MyEvent implements Parcelable {
 
     public String getUsername() {
         return username;
+    }
+
+    public void setEvent_id(Long event_id) {
+        this.event_id = event_id;
     }
 
     @Override

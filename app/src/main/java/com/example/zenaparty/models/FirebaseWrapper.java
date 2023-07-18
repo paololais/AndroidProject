@@ -142,4 +142,52 @@ public class FirebaseWrapper {
             return this.getUser().getUid();
         }
     }
+
+
+    //database
+    public static class Database {
+        private static final DatabaseReference databaseReference = FirebaseDatabase.getInstance("https://pmappfirsttry-default-rtdb.europe-west1.firebasedatabase.app/").getReference("events_test");
+        public Database() {
+
+        }
+
+        public static void saveEvent(MyEvent event) {
+
+            databaseReference.orderByChild("timestamp")
+                    .limitToLast(1)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            // Check if there is a last event
+                            if (dataSnapshot.exists()) {
+                                // Get the last event
+                                DataSnapshot lastEventSnapshot = dataSnapshot.getChildren().iterator().next();
+                                String lastEventId = lastEventSnapshot.getKey();
+                                Long lastEventIdValue = lastEventSnapshot.child("event_id").getValue(Long.class);
+
+                                // Step 2: Increment the retrieved "event_id" value
+                                long newEventIdValue;
+                                if (lastEventIdValue == null) {
+                                    newEventIdValue = 0L;   // If the "event_id" value is null, set it to 1
+                                } else {
+                                    newEventIdValue = lastEventIdValue + 1;
+                                }
+
+                                // Step 3: Insert a new event with the incremented "event_id" value
+                                String newEventId = databaseReference.push().getKey();
+                                event.setEvent_id(newEventIdValue);
+
+                                // Push the new event to the events node
+                                databaseReference.child(newEventId).setValue(event);
+                                Log.w("FirebaseWrapper", "New event inserted with ID: " + newEventId);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Log.w("FirebaseWrapper", "Failed to read value.", error.toException());
+                        }
+                    });
+        }
+    }
 }
