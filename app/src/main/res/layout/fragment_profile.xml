@@ -16,6 +16,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:padding="1dp"
+            android:id="@+id/settingsiv"
             android:src="@drawable/ic_settings_foreground" />
 
         <TextView
@@ -54,40 +55,32 @@
                 android:textStyle="bold"
                 android:textSize="22sp"/>
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:paddingStart="30dp"
-                android:layout_gravity="center"
-                android:background="@drawable/round_back_secondary_100"
-                android:text="Edit Profile"
-                android:textAllCaps="false"
-                android:textColor="@color/Primary"
-                android:paddingEnd="30dp"/>
 
-            <androidx.appcompat.widget.AppCompatButton
+
+      <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_marginTop="30dp"
                 android:paddingStart="30dp"
-                android:layout_gravity="left"
+                android:layout_gravity="center"
                 android:background="@drawable/round_back_secondary_100"
                 android:text="i tuoi eventi"
                 android:textAllCaps="false"
                 android:textColor="@color/Primary"
+                android:id="@+id/eventstv"
                 android:paddingEnd="30dp"/>
 
-            <androidx.appcompat.widget.AppCompatButton
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:layout_marginTop="-40dp"
+                android:layout_marginTop="30dp"
                 android:paddingStart="30dp"
-                android:layout_gravity="right"
+                android:layout_gravity="center"
                 android:background="@drawable/round_back_secondary_100"
                 android:text="preferiti"
                 android:textAllCaps="false"
                 android:textColor="@color/Primary"
+                android:id="@+id/prefertv"
                 android:paddingEnd="30dp"/>
 
 
@@ -95,6 +88,5 @@
     </ScrollView>
 </LinearLayout>
 
-    <!---i tuoi eventi, preferiti (sistemare posizione finale)
-                       fragment i tuoi eventi e preferiti
-                       mettere il logout nei setting--->
+<!--togliere i padding start e end e metterne uno unico --->
+
