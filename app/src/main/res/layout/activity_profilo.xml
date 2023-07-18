@@ -15,8 +15,8 @@
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/ic_settings_foreground"
-            android:padding="1dp"/>
+            android:padding="1dp"
+            android:src="@drawable/ic_settings_foreground" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -66,27 +66,35 @@
                 android:textColor="@color/Primary"
                 android:paddingEnd="30dp"/>
 
-            <LinearLayout
-                android:background="@drawable/round_back_whiite10_20"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginTop="40dp"
-                android:orientation="vertical"
-                android:padding="15dp">
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="30dp"
+                android:paddingStart="30dp"
+                android:layout_gravity="left"
+                android:background="@drawable/round_back_secondary_100"
+                android:text="i tuoi eventi"
+                android:textAllCaps="false"
+                android:textColor="@color/Primary"
+                android:paddingEnd="30dp"/>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="-40dp"
+                android:paddingStart="30dp"
+                android:layout_gravity="right"
+                android:background="@drawable/round_back_secondary_100"
+                android:text="preferiti"
+                android:textAllCaps="false"
+                android:textColor="@color/Primary"
+                android:paddingEnd="30dp"/>
 
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src=""
-                        android:padding="12dp"/>
-                </RelativeLayout>
-            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
+
+    <!---i tuoi eventi, preferiti (sistemare posizione finale)
+                       fragment i tuoi eventi e preferiti
+                       mettere il logout nei setting--->
