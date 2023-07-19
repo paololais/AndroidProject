@@ -20,6 +20,14 @@
         android:gravity="center"
         android:orientation="horizontal">
 
+        <ImageButton
+            android:id="@+id/btnFilter"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/ic_filter_foreground"
+            android:backgroundTint="#000000"
+            android:contentDescription="Filter options" />
+
         <Button
             android:id="@+id/btnDecreaseDay"
             android:layout_width="48dp"
@@ -48,12 +56,12 @@
             android:contentDescription="Increase Date" />
 
         <ImageButton
-            android:id="@+id/btnFilter"
+            android:id="@+id/btnRefresh"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/ic_filter_foreground"
+            android:background="@drawable/ic_refresh_foreground"
             android:backgroundTint="#000000"
-            android:contentDescription="Filter options" />
+            android:contentDescription="Refresh"/>
     </LinearLayout>
 
     <TextView

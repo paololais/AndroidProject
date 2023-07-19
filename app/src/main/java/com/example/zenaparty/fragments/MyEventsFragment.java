@@ -51,13 +51,7 @@ public class MyEventsFragment extends Fragment  implements EventListInterface {
         list = new ArrayList<>();
         myAdapter = new EventListAdapter(getContext(),list, this);
         recyclerView.setAdapter(myAdapter);
-        FirebaseWrapper.Database.getUserEventsInserted(list, myAdapter, progressBar);
-
-        if (list.isEmpty()) {
-            tvNoEvents.setVisibility(View.VISIBLE);
-        } else {
-            tvNoEvents.setVisibility(View.GONE);
-        }
+        FirebaseWrapper.Database.getUserEventsInserted(list, myAdapter, progressBar, tvNoEvents);
     }
 
     @Override

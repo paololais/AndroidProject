@@ -54,7 +54,7 @@ public class PreferitiFragment extends Fragment
         myAdapter = new EventListAdapter(getContext(),list, this);
         recyclerView.setAdapter(myAdapter);
 
-        FirebaseWrapper.Database.getCurrentUserFavorites(list, myAdapter, progressBar);
+        FirebaseWrapper.Database.getCurrentUserFavorites(list, myAdapter, progressBar, tvNoEvents);
     }
 
     @Override

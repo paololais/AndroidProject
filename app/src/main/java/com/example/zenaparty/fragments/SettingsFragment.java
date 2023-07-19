@@ -27,9 +27,6 @@ public class SettingsFragment extends Fragment {
 
     FirebaseAuth auth;
 
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

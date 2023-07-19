@@ -75,8 +75,8 @@ public class HomeFragment extends Fragment
         Button btnIncreaseDay = view.findViewById(R.id.btnIncreaseDay);
         Button btnDecreaseDay = view.findViewById(R.id.btnDecreaseDay);
         ImageButton btnFilter = view.findViewById(R.id.btnFilter);
+        ImageButton btnRefresh = view.findViewById(R.id.btnRefresh);
         progressBar = view.findViewById(R.id.progressBar);
-
 
         sharedPreferences = requireActivity().getSharedPreferences("SavedValues", Context.MODE_PRIVATE);
 
@@ -148,7 +148,7 @@ public class HomeFragment extends Fragment
                         // metodo per filtrare gli eventi in base alla data selezionata
                         SimpleDateFormat newFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
                         newFormattedDate = newFormat.format(calendar.getTime());
-                       filterEventsByType();
+                        filterEventsByType();
                     }
                 },year, month,day);
                 dialog.show();
@@ -189,6 +189,13 @@ public class HomeFragment extends Fragment
             @Override
             public void onClick(View view) {
                 openFilterDialog();
+            }
+        });
+
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                readDatabase(database);
             }
         });
     }
