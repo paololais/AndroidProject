@@ -96,47 +96,41 @@ public class FirebaseWrapper {
         public void signIn(String email, String password, ProgressBar progressBar, Callback callback) {
             progressBar.setVisibility(View.VISIBLE);
             this.auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            callback.invoke(task.isSuccessful());
-                            progressBar.setVisibility(View.GONE);
-                        }
+                    .addOnCompleteListener(task -> {
+                        callback.invoke(task.isSuccessful());
+                        progressBar.setVisibility(View.GONE);
                     });
         }
 
         public void signUp(String email, String password, String username, ProgressBar progressBar, Callback callback) {
             progressBar.setVisibility(View.VISIBLE);
             this.auth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                FirebaseUser user = auth.getCurrentUser();
-                                if (user != null) {
-                                    String userId = user.getUid();
-                                    String userEmail = user.getEmail();
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = auth.getCurrentUser();
+                            if (user != null) {
+                                String userId = user.getUid();
+                                String userEmail = user.getEmail();
 
-                                    // Salva email nel database "users"
-                                    DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
-                                    usersRef.child(userId).child("email").setValue(userEmail);
+                                // Salva email nel database "users"
+                                DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
+                                usersRef.child(userId).child("email").setValue(userEmail);
 
-                                    // Salva l'username nel database degli usernames
-                                    DatabaseReference usernamesRef = FirebaseDatabase.getInstance().getReference("usernames");
-                                    usernamesRef.child(username).setValue(userId);
+                                // Salva l'username nel database degli usernames
+                                DatabaseReference usernamesRef = FirebaseDatabase.getInstance().getReference("usernames");
+                                usernamesRef.child(username).setValue(userId);
 
-                                    // Callback con esito positivo
-                                    callback.invoke(true);
-                                } else {
-                                    // Gestione dell'errore
-                                    callback.invoke(false);
-                                }
+                                // Callback con esito positivo
+                                callback.invoke(true);
                             } else {
                                 // Gestione dell'errore
                                 callback.invoke(false);
                             }
-                            progressBar.setVisibility(View.GONE);
+                        } else {
+                            // Gestione dell'errore
+                            callback.invoke(false);
                         }
+                        progressBar.setVisibility(View.GONE);
                     });
         }
 
@@ -167,7 +161,6 @@ public class FirebaseWrapper {
                             if (dataSnapshot.exists()) {
                                 // Get the last event
                                 DataSnapshot lastEventSnapshot = dataSnapshot.getChildren().iterator().next();
-                                String lastEventId = lastEventSnapshot.getKey();
                                 Long lastEventIdValue = lastEventSnapshot.child("event_id").getValue(Long.class);
 
                                 // Step 2: Increment the retrieved "event_id" value
@@ -179,14 +172,13 @@ public class FirebaseWrapper {
                                 }
 
                                 // Step 3: Insert a new event with the incremented "event_id" value
-                                String newEventId = databaseReference.push().getKey();
                                 event.setEvent_id(newEventIdValue);
 
                                 // Push the new event to the events node
-                                databaseReference.child(newEventId).setValue(event);
+                                databaseReference.child(String.valueOf(newEventIdValue)).setValue(event);
 
                                 addToInsertedEvents(event);
-                                Log.w("FirebaseWrapper", "New event inserted with ID: " + newEventId);
+                                Log.w("FirebaseWrapper", "New event inserted with ID: " + newEventIdValue);
                             }
                         }
 
@@ -224,6 +216,7 @@ public class FirebaseWrapper {
                             // Cerca l'evento corrispondente nell'elenco degli eventi
                             DatabaseReference eventsReference = FirebaseDatabase.getInstance("https://pmappfirsttry-default-rtdb.europe-west1.firebasedatabase.app/")
                                     .getReference("events");
+                            assert eventId != null;
                             Query eventQuery = eventsReference.orderByChild("event_id").equalTo(Integer.parseInt(eventId));
                             eventQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -299,6 +292,7 @@ public class FirebaseWrapper {
                             // Cerca l'evento corrispondente nell'elenco degli eventi
                             DatabaseReference eventsReference = FirebaseDatabase.getInstance("https://pmappfirsttry-default-rtdb.europe-west1.firebasedatabase.app/")
                                     .getReference("events");
+                            assert eventId != null;
                             Query eventQuery = eventsReference.orderByChild("event_id").equalTo(Integer.parseInt(eventId));
                             eventQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override

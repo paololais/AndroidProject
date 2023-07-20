@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.zenaparty.R;
 import com.example.zenaparty.fragments.AddEventFragment;
 import com.example.zenaparty.fragments.HomeFragment;
-import com.example.zenaparty.fragments.MapsFragment;
 import com.example.zenaparty.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -25,7 +24,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
     BottomNavigationView bottomNavigationView;
     HomeFragment homeFragment = new HomeFragment();
-    MapsFragment mapFragment = new MapsFragment();
     AddEventFragment addEventFragment = new AddEventFragment();
     ProfileFragment profileFragment = new ProfileFragment();
     @Override
@@ -61,13 +59,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.flFragment, homeFragment)
-                        .commit();
-                return true;
-
-            case R.id.map:
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.flFragment, mapFragment)
                         .commit();
                 return true;
 
