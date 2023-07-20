@@ -78,4 +78,9 @@ public class PreferitiFragment extends Fragment
     public void onButtonActionClick(int position) {
 
     }
+
+    @Override
+    public void onEventRemoved(boolean success, int position) {
+
+    }
 }

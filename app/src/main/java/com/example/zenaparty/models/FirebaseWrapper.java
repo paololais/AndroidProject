@@ -6,6 +6,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.example.zenaparty.adapters.EventListAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -371,7 +372,7 @@ public class FirebaseWrapper {
             }
         }
 
-        public static void removeFromInsertedEvents(MyEvent myEvent){
+        public static void removeFromInsertedEvents(EventListInterface listInterface, MyEvent myEvent, int position){
 
             FirebaseAuth auth = FirebaseAuth.getInstance();
 
@@ -384,15 +385,32 @@ public class FirebaseWrapper {
                         .child("inserted_events");
                 String eventId = String.valueOf(myEvent.getEvent_id());
 
-                insertedEventsRef.child(eventId).removeValue();
-
-                DatabaseReference eventsRef = FirebaseDatabase.getInstance()
-                        .getReference("events")
-                                .child(eventId);
-
-                eventsRef.removeValue();
-
-                Log.d("firebase wrapper", "removed from inserted events");
+                insertedEventsRef.child(eventId).removeValue(new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                        if (error ==null){
+                            DatabaseReference eventsRef = FirebaseDatabase.getInstance()
+                                    .getReference("events")
+                                    .child(eventId);
+                            eventsRef.removeValue(new DatabaseReference.CompletionListener() {
+                                @Override
+                                public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                                    if(error == null){
+                                        listInterface.onEventRemoved(true, position);
+                                        Log.d("firebase wrapper", "removed from inserted events");
+                                    }
+                                    else {
+                                        listInterface.onEventRemoved(false, position);
+                                        Log.d("firebase wrapper", "error removed from inserted events");
+                                    }
+                                }
+                            });
+                        } else {
+                            listInterface.onEventRemoved(false, position);
+                            Log.d("firebase wrapper", " error removed from inserted events");
+                        }
+                    }
+                });
             }
         }
 

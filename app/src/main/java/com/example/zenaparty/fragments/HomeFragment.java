@@ -336,6 +336,11 @@ public class HomeFragment extends Fragment
     }
 
     @Override
+    public void onEventRemoved(boolean success, int position) {
+
+    }
+
+    @Override
     public void onCheckboxSelected(boolean isParty, boolean isSagre, boolean isMusica, boolean isSport, boolean isAltro) {
         this.isParty = isParty;
         this.isSagre = isSagre;

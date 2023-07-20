@@ -74,8 +74,21 @@ public class MyEventsFragment extends Fragment  implements EventListInterface {
     @Override
     public void onButtonActionClick(int position) {
         MyEvent selectedEvent = myAdapter.getList().get(position);
-        FirebaseWrapper.Database.removeFromInsertedEvents(selectedEvent);
+        FirebaseWrapper.Database.removeFromInsertedEvents(this, selectedEvent, position);
+    }
 
+    @Override
+    public void onEventRemoved(boolean success, int position) {
+        if(success){
+            myAdapter.getList().remove(position);
+            myAdapter.notifyDataSetChanged();
 
+            if(list.isEmpty()){
+                tvNoEvents.setVisibility(View.VISIBLE);
+            }
+        }
+        else {
+            return;
+        }
     }
 }
