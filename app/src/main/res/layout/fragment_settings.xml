@@ -27,28 +27,61 @@
             android:textStyle="italic|bold" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="30dp"
+            android:paddingStart="30dp"
             android:gravity="center"
-            android:text="You are logged as: "
-            android:textColor="@color/black"
-            android:textSize="20sp"/>
+            android:background="@drawable/round_back_secondary_100"
+            android:text="modifica profilo"
+            android:textAllCaps="false"
+            android:textColor="@color/Primary"
+            android:id=""
+            android:paddingEnd="30dp"/>
+
+
+        <!-- notification -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:id="@+id/notification_Icon"
+            android:layout_height="40dp"
+            android:src="@drawable/notifications_icon"
+            android:background="@color/notification"
+            android:padding="12dp"/>
 
         <TextView
-            android:id="@+id/userTextView"
-            android:layout_width="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="username"
+            android:layout_centerVertical="true"
+            android:text="notifiche"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textStyle="bold"
+            android:layout_toEndOf="@id/notification_Icon"/>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:switchMinWidth="50dp"
+            android:theme="@style/notificationSwitch"/>
+
+    </RelativeLayout>
+
+
 
 
         <Button
             android:id="@+id/logoutButton"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
+            android:layout_margin="150dp"
             android:layout_marginTop="20dp"
             android:backgroundTint="#41CD04"
             android:text="Logout"
