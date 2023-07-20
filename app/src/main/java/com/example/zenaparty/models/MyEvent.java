@@ -2,6 +2,9 @@ package com.example.zenaparty.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 
@@ -115,4 +118,5 @@ public class MyEvent implements Parcelable {
         dest.writeString(description);
         dest.writeString(username);
     }
+
 }

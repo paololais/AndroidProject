@@ -51,7 +51,7 @@ public class PreferitiFragment extends Fragment
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         list = new ArrayList<>();
-        myAdapter = new EventListAdapter(getContext(),list, this);
+        myAdapter = new EventListAdapter(getContext(),list, this, false);
         recyclerView.setAdapter(myAdapter);
 
         FirebaseWrapper.Database.getCurrentUserFavorites(list, myAdapter, progressBar, tvNoEvents);
@@ -72,5 +72,10 @@ public class PreferitiFragment extends Fragment
         fragmentTransaction.replace(R.id.flFragment, eventOpenedFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onButtonActionClick(int position) {
+
     }
 }

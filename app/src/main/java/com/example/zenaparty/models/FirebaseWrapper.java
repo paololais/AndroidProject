@@ -214,6 +214,9 @@ public class FirebaseWrapper {
 
                         list.clear();
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            if (dataSnapshot.getValue()==null) continue;
+                            if (!(boolean)dataSnapshot.getValue()) continue;
+
                             // Ottieni l'ID dell'evento preferito dall'utente
                             String eventId = dataSnapshot.getKey();
 
@@ -232,7 +235,9 @@ public class FirebaseWrapper {
                                     // Aggiorna l'adattatore e nascondi il progresso di caricamento
                                     myAdapter.setEventList(list);
                                     myAdapter.notifyDataSetChanged();
+
                                     progressBar.setVisibility(View.GONE);
+
                                     if (list.isEmpty()) {
                                         tvNoEvents.setVisibility(View.VISIBLE);
                                     } else {
@@ -243,6 +248,7 @@ public class FirebaseWrapper {
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
                                     progressBar.setVisibility(View.GONE);
+
                                     if (list.isEmpty()) {
                                         tvNoEvents.setVisibility(View.VISIBLE);
                                     } else {
@@ -250,6 +256,13 @@ public class FirebaseWrapper {
                                     }
                                 }
                             });
+                        }
+
+                        progressBar.setVisibility(View.GONE);
+                        if (list.isEmpty()) {
+                            tvNoEvents.setVisibility(View.VISIBLE);
+                        } else {
+                            tvNoEvents.setVisibility(View.GONE);
                         }
                     }
 
@@ -298,6 +311,7 @@ public class FirebaseWrapper {
                                     myAdapter.setEventList(list);
                                     myAdapter.notifyDataSetChanged();
                                     progressBar.setVisibility(View.GONE);
+
                                     if (list.isEmpty()) {
                                         tvNoEvents.setVisibility(View.VISIBLE);
                                     } else {
@@ -308,6 +322,7 @@ public class FirebaseWrapper {
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
                                     progressBar.setVisibility(View.GONE);
+
                                     if (list.isEmpty()) {
                                         tvNoEvents.setVisibility(View.VISIBLE);
                                     } else {
@@ -316,11 +331,24 @@ public class FirebaseWrapper {
                                 }
                             });
                         }
+                        progressBar.setVisibility(View.GONE);
+
+                        if (list.isEmpty()) {
+                            tvNoEvents.setVisibility(View.VISIBLE);
+                        } else {
+                            tvNoEvents.setVisibility(View.GONE);
+                        }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                         progressBar.setVisibility(View.GONE);
+
+                        if (list.isEmpty()) {
+                            tvNoEvents.setVisibility(View.VISIBLE);
+                        } else {
+                            tvNoEvents.setVisibility(View.GONE);
+                        }
                     }
                 });
             }
@@ -357,6 +385,14 @@ public class FirebaseWrapper {
                 String eventId = String.valueOf(myEvent.getEvent_id());
 
                 insertedEventsRef.child(eventId).removeValue();
+
+                DatabaseReference eventsRef = FirebaseDatabase.getInstance()
+                        .getReference("events")
+                                .child(eventId);
+
+                eventsRef.removeValue();
+
+                Log.d("firebase wrapper", "removed from inserted events");
             }
         }
 

@@ -17,19 +17,34 @@
         android:background="@drawable/gradient1"
         tools:ignore="MissingConstraints">
 
-
-        <TextView
-            android:id="@+id/eventName"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:fontFamily="@font/bangers"
-            android:letterSpacing="0.05"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:text="Nome Evento"
-            android:textColor="@color/white"
-            android:textSize="27sp" />
+            android:gravity="center">
+            <TextView
+                android:id="@+id/eventName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:fontFamily="@font/bangers"
+                android:letterSpacing="0.05"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="Nome Evento"
+                android:textColor="@color/white"
+                android:textSize="27sp" />
+
+            <ImageButton
+                android:id="@+id/btnDelete"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginLeft="50dp"
+                android:visibility="gone"
+                android:contentDescription="delete button"
+                android:background="@drawable/ic_delete_foreground"
+                android:backgroundTint="@color/white" />
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -95,7 +95,7 @@ public class HomeFragment extends Fragment
             SimpleDateFormat newFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
             newFormattedDate = newFormat.format(calendar.getTime());
             list = new ArrayList<>();
-            myAdapter = new EventListAdapter(getContext(),list, this);
+            myAdapter = new EventListAdapter(getContext(),list, this, false);
             recyclerView.setAdapter(myAdapter);
             readDatabase(database);
         } else {
@@ -118,13 +118,13 @@ public class HomeFragment extends Fragment
 
             if (list == null) {
                 list = new ArrayList<>();
-                myAdapter = new EventListAdapter(getContext(),list, this);
+                myAdapter = new EventListAdapter(getContext(),list, this, false);
                 recyclerView.setAdapter(myAdapter);
                 readDatabase(database);
             }
 
             // Aggiorna l'adattatore con la lista recuperata
-            myAdapter = new EventListAdapter(getContext(),list,this);
+            myAdapter = new EventListAdapter(getContext(),list,this, false);
             recyclerView.setAdapter(myAdapter);
             myAdapter.notifyDataSetChanged();
 
@@ -328,6 +328,11 @@ public class HomeFragment extends Fragment
         fragmentTransaction.replace(R.id.flFragment, eventOpenedFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onButtonActionClick(int position) {
+
     }
 
     @Override

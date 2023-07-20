@@ -49,7 +49,7 @@ public class MyEventsFragment extends Fragment  implements EventListInterface {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         list = new ArrayList<>();
-        myAdapter = new EventListAdapter(getContext(),list, this);
+        myAdapter = new EventListAdapter(getContext(),list, this,true);
         recyclerView.setAdapter(myAdapter);
         FirebaseWrapper.Database.getUserEventsInserted(list, myAdapter, progressBar, tvNoEvents);
     }
@@ -69,5 +69,13 @@ public class MyEventsFragment extends Fragment  implements EventListInterface {
         fragmentTransaction.replace(R.id.flFragment, eventOpenedFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onButtonActionClick(int position) {
+        MyEvent selectedEvent = myAdapter.getList().get(position);
+        FirebaseWrapper.Database.removeFromInsertedEvents(selectedEvent);
+
+
     }
 }
