@@ -60,7 +60,7 @@ public class LogActivity extends AppCompatActivity{
                     .makeText(this, "Username or password are not valid", Toast.LENGTH_LONG)
                     .show();
         } else {
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, SplashActivity.class);
             this.startActivity(intent);
             this.finish();
         }

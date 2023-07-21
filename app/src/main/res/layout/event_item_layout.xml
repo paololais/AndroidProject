@@ -32,7 +32,7 @@
                 android:paddingRight="5dp"
                 android:text="Nome Evento"
                 android:textColor="@color/white"
-                android:textSize="27sp" />
+                android:textSize="22sp" />
 
             <ImageButton
                 android:id="@+id/btnDelete"
@@ -57,7 +57,7 @@
                 android:layout_margin="5dp"
                 android:text="Dove:"
                 android:textColor="#FBFAF6"
-                android:textSize="18sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="15sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -80,7 +80,7 @@
                 android:layout_margin="5dp"
                 android:text="Orario:"
                 android:textColor="#FBFAF6"
-                android:textSize="18sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:textColor="@color/white"
-                android:textSize="18sp"/>
+                android:textSize="15sp"/>
         </LinearLayout>
 
 
@@ -104,7 +104,7 @@
                 android:layout_margin="5dp"
                 android:text="Prezzo:"
                 android:textColor="#FBFAF6"
-                android:textSize="18sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -113,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="15sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -127,7 +127,7 @@
                 android:layout_margin="5dp"
                 android:text="Tipologia:"
                 android:textColor="#FBFAF6"
-                android:textSize="18sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -136,7 +136,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="15sp" />
         </LinearLayout>
 
     </LinearLayout>

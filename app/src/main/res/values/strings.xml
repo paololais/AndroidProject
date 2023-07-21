@@ -5,4 +5,6 @@
     <string name="goToLogin">Do you already have an account? Click here and login!</string>
     <string name="goToRegister">Not registered? Click here to create a new account!</string>
     <string name="places_prompt">Test</string>
+    <string name="neededPermissions">To go over, the app needs the CALENDAR PERMISSION to access to the calendar Content Provider</string>
+    <string name="grantPermission">Grant Now</string>
 </resources>
