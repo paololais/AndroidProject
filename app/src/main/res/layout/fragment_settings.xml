@@ -17,31 +17,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".activities.MainActivity">
+
+
+        <!-- notification -->
+
         <TextView
             android:id="@+id/settingsFragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
             android:text="Settings"
             android:textColor="#43a047"
-            android:textSize="40sp"
+            android:textSize="50sp"
             android:textStyle="italic|bold" />
 
         <TextView
+            android:id=""
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginTop="30dp"
-            android:paddingStart="30dp"
-            android:gravity="center"
             android:background="@drawable/round_back_secondary_100"
-            android:text="modifica profilo"
+            android:gravity="center"
+            android:paddingStart="30dp"
+            android:paddingEnd="30dp"
+            android:text="Modifica profilo"
             android:textAllCaps="false"
-            android:textColor="@color/Primary"
-            android:id=""
-            android:paddingEnd="30dp"/>
+            android:textColor="@color/Primary" />
 
-
-        <!-- notification -->
-    <RelativeLayout
+        <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp">
@@ -59,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="notifiche"
+            android:text="Notifiche"
             android:textColor="@color/black"
             android:textStyle="bold"
             android:layout_toEndOf="@id/notification_Icon"/>
@@ -72,21 +75,58 @@
             android:switchMinWidth="50dp"
             android:theme="@style/notificationSwitch"/>
 
+
     </RelativeLayout>
 
 
+        <!--se vuoi mettere il credit -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp">
 
+
+            <ImageView
+                android:id="@+id/preferite_Icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/GIALLO"
+                android:padding="12dp"
+                android:src="@drawable/preferite_icon"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
+                android:layout_toEndOf="@+id/preferite_Icon"
+                android:text="Credit"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/right_mode_icon"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"/>
+
+
+
+        </RelativeLayout>
 
         <Button
             android:id="@+id/logoutButton"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
+            android:layout_width="165dp"
+            android:layout_height="73dp"
             android:layout_margin="150dp"
             android:layout_marginTop="20dp"
             android:backgroundTint="#41CD04"
             android:text="Logout"
             android:textColor="#fff"
             tools:ignore="DuplicateSpeakableTextCheck" />
+
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
