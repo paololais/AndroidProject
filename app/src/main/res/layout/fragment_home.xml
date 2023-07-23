@@ -26,14 +26,15 @@
             android:layout_height="48dp"
             android:background="@drawable/ic_filter_foreground"
             android:backgroundTint="#000000"
-            android:contentDescription="Filter options" />
+            android:contentDescription="@string/filter_options"
+            tools:ignore="TouchTargetSizeCheck,VisualLintBounds" />
 
         <Button
             android:id="@+id/btnDecreaseDay"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="@drawable/ic_arrow_left_foreground"
-            android:contentDescription="Decrease Date" />
+            android:contentDescription="@string/decrease_date" />
 
         <TextView
             android:id="@+id/tvSelectDate"
@@ -41,19 +42,20 @@
             android:layout_height="wrap_content"
             android:background="@drawable/date_border"
             android:padding="5dp"
-            android:text="Ven 6 Giugno"
+            android:text="@string/ven_6_giugno"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textColor="#fff"
             android:textSize="17sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="TextSizeCheck" />
 
         <Button
             android:id="@+id/btnIncreaseDay"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="@drawable/ic_arrow_right_foreground"
-            android:contentDescription="Increase Date" />
+            android:contentDescription="@string/increase_date" />
 
         <ImageButton
             android:id="@+id/btnRefresh"
@@ -61,7 +63,8 @@
             android:layout_height="48dp"
             android:background="@drawable/ic_refresh_foreground"
             android:backgroundTint="#000000"
-            android:contentDescription="Refresh" />
+            android:contentDescription="@string/refresh"
+            tools:ignore="TouchTargetSizeCheck,VisualLintBounds" />
     </LinearLayout>
 
     <TextView
@@ -69,7 +72,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
-        android:text="Siamo spiacenti, nessun evento disponibile per la data selezionata. :("
+        android:text="@string/nessun_evento"
         android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="italic"
