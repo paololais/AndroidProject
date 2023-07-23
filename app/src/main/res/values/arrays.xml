@@ -4,20 +4,14 @@
         <item>Tutte</item>
         <item>Musica</item>
         <item>Sport</item>
-        <item>Disco e feste</item>
+        <item>Disco e Feste</item>
         <item>Sagre</item>
-        <item>Altro</item>
-    </string-array>
-    <string-array name="places">
-        <item>Bar</item>
-        <item>Discoteca</item>
-        <item>Pub</item>
         <item>Altro</item>
     </string-array>
     <string-array name="type">
         <item>Musica</item>
         <item>Sport</item>
-        <item>Disco e feste</item>
+        <item>Disco e Feste</item>
         <item>Sagre</item>
         <item>Altro</item>
     </string-array>

@@ -1,71 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#fff"
+    android:orientation="vertical"
+    android:padding="15dp"
     tools:context=".activities.MainActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#fff"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="15dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:context=".activities.MainActivity">
-
-
-        <!-- notification -->
-
+    <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp">
+        <ImageView
+            android:id="@+id/goBackBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_goback_foreground"
+            app:tint="@color/black"
+            tools:ignore="ContentDescription" />
         <TextView
             android:id="@+id/settingsFragment"
+            android:layout_toEndOf="@id/goBackBtn"
+            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-            android:text="Settings"
-            android:textColor="#43a047"
-            android:textSize="50sp"
-            android:textStyle="italic|bold" />
+            android:layout_marginStart="50dp"
+            android:text="@string/settings"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
-        <TextView
-            android:id=""
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/round_back_secondary_100"
-            android:gravity="center"
-            android:paddingStart="30dp"
-            android:paddingEnd="30dp"
-            android:text="Modifica profilo"
-            android:textAllCaps="false"
-            android:textColor="@color/Primary" />
-
-        <RelativeLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_border"
         android:layout_marginTop="50dp">
 
         <ImageView
-            android:layout_width="40dp"
             android:id="@+id/notification_Icon"
+            android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/notifications_icon"
             android:background="@color/notification"
-            android:padding="12dp"/>
+            android:padding="7dp"
+            android:src="@drawable/notifications_icon"
+            tools:ignore="ContentDescription,ImageContrastCheck" />
 
         <TextView
-            android:layout_marginStart="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="Notifiche"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@id/notification_Icon"
+            android:text="@string/notifiche"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:layout_toEndOf="@id/notification_Icon"/>
+            tools:ignore="RelativeOverlap" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:layout_width="wrap_content"
@@ -73,60 +66,75 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:switchMinWidth="50dp"
-            android:theme="@style/notificationSwitch"/>
+            android:theme="@style/notificationSwitch"
+            tools:ignore="TouchTargetSizeCheck" />
 
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/modificaprofilo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_border"
+        android:layout_marginTop="50dp">
 
-        <!--se vuoi mettere il credit -->
-        <RelativeLayout
-            android:layout_width="match_parent"
+
+        <ImageView
+            android:id="@+id/edit_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@color/GIALLO"
+            android:src="@drawable/ic_edit_foreground"
+            tools:ignore="ContentDescription,ImageContrastCheck" />
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp">
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/edit_icon"
+            android:text="@string/modifica_profilo"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            tools:ignore="RelativeOverlap" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/right_mode_icon"
+            tools:ignore="ContentDescription" />
 
 
-            <ImageView
-                android:id="@+id/preferite_Icon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@color/GIALLO"
-                android:padding="12dp"
-                android:src="@drawable/preferite_icon"/>
+    </RelativeLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="20dp"
-                android:layout_toEndOf="@+id/preferite_Icon"
-                android:text="Credit"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/right_mode_icon"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"/>
+    <RelativeLayout
+        android:id="@+id/logoutButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_border"
+        android:layout_marginTop="50dp">
 
 
+        <ImageView
+            android:id="@+id/logout_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@color/GIALLO"
+            android:src="@drawable/ic_logout_foreground"
+            tools:ignore="ContentDescription,ImageContrastCheck" />
 
-        </RelativeLayout>
-
-        <Button
-            android:id="@+id/logoutButton"
-            android:layout_width="165dp"
-            android:layout_height="73dp"
-            android:layout_margin="150dp"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="#41CD04"
-            android:text="Logout"
-            android:textColor="#fff"
-            tools:ignore="DuplicateSpeakableTextCheck" />
-
-
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/logout_icon"
+            android:text="@string/logout"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            tools:ignore="RelativeOverlap" />
+    </RelativeLayout>
+</LinearLayout>

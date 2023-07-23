@@ -1,12 +1,14 @@
 package com.example.zenaparty.models;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.example.zenaparty.adapters.EventListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -82,14 +84,6 @@ public class FirebaseWrapper {
             return this.auth.getCurrentUser() != null;
         }
 
-        public FirebaseUser getUser() {
-            return this.auth.getCurrentUser();
-        }
-
-        public void signOut() {
-            this.auth.signOut();
-        }
-
         public void signIn(String email, String password, ProgressBar progressBar, Callback callback) {
             progressBar.setVisibility(View.VISIBLE);
             this.auth.signInWithEmailAndPassword(email, password)
@@ -131,11 +125,6 @@ public class FirebaseWrapper {
                     });
         }
 
-        public String getUid() {
-            // TODO: remove this assert and better handling of non logged-in users
-            assert this.isAuthenticated();
-            return this.getUser().getUid();
-        }
     }
 
 
@@ -147,7 +136,9 @@ public class FirebaseWrapper {
 
         }
 
-        public static void saveEvent(MyEvent event) {
+        public static void saveEvent(MyEvent event, Context context, ProgressBar progressBar) {
+            // Mostra il progresso di caricamento
+            progressBar.setVisibility(View.VISIBLE);
 
             databaseReference.orderByChild("timestamp")
                     .limitToLast(1)
@@ -173,15 +164,17 @@ public class FirebaseWrapper {
 
                                 // Push the new event to the events node
                                 databaseReference.child(String.valueOf(newEventIdValue)).setValue(event);
-
+                                Toast.makeText(context, "Evento aggiunto", Toast.LENGTH_SHORT).show();
                                 addToInsertedEvents(event);
                                 Log.w("FirebaseWrapper", "New event inserted with ID: " + newEventIdValue);
+                                progressBar.setVisibility(View.GONE);
                             }
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
                             Log.w("FirebaseWrapper", "Failed to read value.", error.toException());
+                            progressBar.setVisibility(View.GONE);
                         }
                     });
         }
@@ -216,6 +209,7 @@ public class FirebaseWrapper {
                             assert eventId != null;
                             Query eventQuery = eventsReference.orderByChild("event_id").equalTo(Integer.parseInt(eventId));
                             eventQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @SuppressLint("NotifyDataSetChanged")
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     for (DataSnapshot eventDataSnapshot : snapshot.getChildren()) {
@@ -292,6 +286,7 @@ public class FirebaseWrapper {
                             assert eventId != null;
                             Query eventQuery = eventsReference.orderByChild("event_id").equalTo(Integer.parseInt(eventId));
                             eventQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @SuppressLint("NotifyDataSetChanged")
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     for (DataSnapshot eventDataSnapshot : snapshot.getChildren()) {
@@ -376,34 +371,103 @@ public class FirebaseWrapper {
                         .child("inserted_events");
                 String eventId = String.valueOf(myEvent.getEvent_id());
 
-                insertedEventsRef.child(eventId).removeValue(new DatabaseReference.CompletionListener() {
-                    @Override
-                    public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                        if (error ==null){
-                            DatabaseReference eventsRef = FirebaseDatabase.getInstance()
-                                    .getReference("events")
-                                    .child(eventId);
-                            eventsRef.removeValue(new DatabaseReference.CompletionListener() {
-                                @Override
-                                public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                                    if(error == null){
-                                        listInterface.onEventRemoved(true, position);
-                                        Log.d("firebase wrapper", "removed from inserted events");
-                                    }
-                                    else {
-                                        listInterface.onEventRemoved(false, position);
-                                        Log.d("firebase wrapper", "error removed from inserted events");
-                                    }
-                                }
-                            });
-                        } else {
-                            listInterface.onEventRemoved(false, position);
-                            Log.d("firebase wrapper", " error removed from inserted events");
-                        }
+                insertedEventsRef.child(eventId).removeValue((error, ref) -> {
+                    if (error ==null){
+                        DatabaseReference eventsRef = FirebaseDatabase.getInstance()
+                                .getReference("events")
+                                .child(eventId);
+                        eventsRef.removeValue((error1, ref1) -> {
+                            if(error1 == null){
+                                listInterface.onEventRemoved(true, position);
+                                Log.d("firebase wrapper", "removed from inserted events");
+                            }
+                            else {
+                                listInterface.onEventRemoved(false, position);
+                                Log.d("firebase wrapper", "error removed from inserted events");
+                            }
+                        });
+                    } else {
+                        listInterface.onEventRemoved(false, position);
+                        Log.d("firebase wrapper", " error removed from inserted events");
                     }
                 });
             }
         }
 
+        public static void modifyUsername(Context context, String newUsername, ProgressBar progressBar){
+            // Mostra il progresso di caricamento
+            progressBar.setVisibility(View.VISIBLE);
+
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+
+            if (auth.getCurrentUser() != null) {
+                String userId = auth.getCurrentUser().getUid();
+
+                DatabaseReference usernamesRef = FirebaseDatabase.getInstance().getReference("usernames");
+                usernamesRef.orderByValue().equalTo(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            snapshot.getRef().removeValue((databaseError, databaseReference) -> {
+                                if (databaseError == null) {
+                                    // Rimozione riuscita, ora crea un nuovo nodo con il nuovo username e lo User ID
+                                    usernamesRef.child(newUsername).setValue(userId);
+                                    Log.d("FirebaseWrapper", "Modified username");
+                                    progressBar.setVisibility(View.GONE);
+
+                                    Toast.makeText(context, "Username Modificato", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    progressBar.setVisibility(View.GONE);
+                                    // Gestisci eventuali errori durante la rimozione del nodo precedente
+                                    Log.w("FirebaseWrapper", "Failed to remove value.", databaseError.toException());
+                                }
+                            });
+                        }
+                        progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        progressBar.setVisibility(View.GONE);
+                        // Gestisci eventuali errori
+                        Log.w("FirebaseWrapper", "Failed to read value.", databaseError.toException());
+                    }
+                });
+            }
+        }
+
+        public static void getAndSetUsername(TextView usernameTv){
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+
+            if (auth.getCurrentUser() != null) {
+                String userId = auth.getCurrentUser().getUid();
+
+                DatabaseReference usernamesRef = FirebaseDatabase.getInstance().getReference("usernames");
+                Query query = usernamesRef.orderByValue().equalTo(userId);
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            // Il nodo con l'User ID desiderato è stato trovato
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                String username = snapshot.getKey();
+                                Log.d("FirebaseWrapper", "Retrieved username");
+                                usernameTv.setText(username);
+                            }
+                        } else {
+                            // Il nodo con l'User ID desiderato non è stato trovato
+                            // Gestisci il caso in cui l'User ID non esista nel database
+                            Log.w("FirebaseWrapper", "Failed to retrieve username.");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        // Gestisci eventuali errori
+                        Log.w("FirebaseWrapper", "Failed to retrieve username.", databaseError.toException());
+                    }
+                });
+            }
+        }
     }
 }

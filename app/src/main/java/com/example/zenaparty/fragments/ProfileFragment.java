@@ -14,12 +14,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.zenaparty.R;
+import com.example.zenaparty.models.FirebaseWrapper;
 
 public class ProfileFragment extends Fragment {
     ImageView settingImageView;
-
     TextView eventsTV;
-
     TextView preferTV;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,41 +36,36 @@ public class ProfileFragment extends Fragment {
         eventsTV = view.findViewById(R.id.eventstv);
         preferTV = view.findViewById(R.id.prefertv);
 
-        settingImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        TextView usernameTv = view.findViewById(R.id.usernameTv);
 
-                SettingsFragment SettingsFragment = new SettingsFragment();
-                FragmentManager fragmentManager = getParentFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.flFragment, SettingsFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-            }
+        FirebaseWrapper.Database.getAndSetUsername(usernameTv);
+
+        settingImageView.setOnClickListener(view1 -> {
+
+            SettingsFragment SettingsFragment = new SettingsFragment();
+            FragmentManager fragmentManager = getParentFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.flFragment, SettingsFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         });
-        eventsTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        eventsTV.setOnClickListener(view12 -> {
 
-                MyEventsFragment myEventsFragment = new MyEventsFragment();
-                FragmentManager fragmentManager = getParentFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.flFragment, myEventsFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-            }
+            MyEventsFragment myEventsFragment = new MyEventsFragment();
+            FragmentManager fragmentManager = getParentFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.flFragment, myEventsFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         });
-        preferTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        preferTV.setOnClickListener(view13 -> {
 
-                PreferitiFragment preferitiFragment = new PreferitiFragment();
-                FragmentManager fragmentManager = getParentFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.flFragment, preferitiFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-            }
+            PreferitiFragment preferitiFragment = new PreferitiFragment();
+            FragmentManager fragmentManager = getParentFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.flFragment, preferitiFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         });
     }
 }

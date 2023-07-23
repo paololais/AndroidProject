@@ -1,6 +1,12 @@
 package com.example.zenaparty.fragments;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,19 +16,11 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-
 import com.example.zenaparty.R;
 import com.example.zenaparty.adapters.EventListAdapter;
 import com.example.zenaparty.models.EventListInterface;
 import com.example.zenaparty.models.FirebaseWrapper;
 import com.example.zenaparty.models.MyEvent;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -45,6 +43,10 @@ public class PreferitiFragment extends Fragment
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        ImageView goBack = view.findViewById(R.id.goBackBtn);
+        goBack.setOnClickListener(view1 -> requireActivity().onBackPressed());
+
         progressBar = view.findViewById(R.id.progressBar);
         recyclerView = view.findViewById(R.id.eventsRecyclerView);
         tvNoEvents = view.findViewById(R.id.tvNoEvents);

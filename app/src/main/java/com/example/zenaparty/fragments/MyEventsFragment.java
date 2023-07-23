@@ -1,5 +1,6 @@
 package com.example.zenaparty.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -43,6 +45,10 @@ public class MyEventsFragment extends Fragment  implements EventListInterface {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        ImageView goBack = view.findViewById(R.id.goBackBtn);
+        goBack.setOnClickListener(view1 -> requireActivity().onBackPressed());
+
         progressBar = view.findViewById(R.id.progressBar);
         recyclerView = view.findViewById(R.id.eventsRecyclerView);
         tvNoEvents = view.findViewById(R.id.tvNoEvents);
@@ -77,6 +83,7 @@ public class MyEventsFragment extends Fragment  implements EventListInterface {
         FirebaseWrapper.Database.removeFromInsertedEvents(this, selectedEvent, position);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onEventRemoved(boolean success, int position) {
         if(success){

@@ -20,7 +20,7 @@
             android:layout_marginBottom="5dp"
             android:gravity="center"
             android:padding="5dp"
-            android:text="Inserisci un nuovo evento"
+            android:text="@string/inserisci_un_nuovo_evento"
             android:textAllCaps="true"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -33,7 +33,7 @@
             android:layout_marginBottom="5dp"
             android:autofillHints="test"
             android:background="@drawable/edit_text_border"
-            android:hint="Nome Evento"
+            android:hint="@string/nome_evento"
             android:inputType="text"
             android:minHeight="48dp"
             android:padding="5dp" />
@@ -44,10 +44,11 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:background="@drawable/edit_text_border"
-            android:hint="Descrizione"
+            android:hint="@string/descrizione"
             android:inputType="text"
             android:minHeight="48dp"
-            android:padding="5dp" />
+            android:padding="5dp"
+            android:importantForAutofill="no" />
 
 
         <EditText
@@ -56,10 +57,11 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:background="@drawable/edit_text_border"
-            android:hint="Indirizzo"
+            android:hint="@string/indirizzo"
             android:inputType="text"
             android:minHeight="48dp"
-            android:padding="5dp" />
+            android:padding="5dp"
+            android:importantForAutofill="no" />
 
 
         <EditText
@@ -68,17 +70,18 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:background="@drawable/edit_text_border"
-            android:hint="Prezzo"
+            android:hint="@string/prezzo"
             android:inputType="text"
             android:minHeight="48dp"
-            android:padding="5dp" />
+            android:padding="5dp"
+            android:importantForAutofill="no" />
 
         <TextView
             android:id="@+id/addEventDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:hint="Data Inizio Evento"
+            android:text="@string/data_inizio_evento"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -97,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:hint="Ora Inizio Evento"
+            android:text="@string/ora_inizio_evento"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -114,7 +117,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:hint="Tipologia"
+            android:text="@string/tipologia"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -134,6 +137,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"
             android:layout_margin="20dp"
-            android:text="Aggiungi" />
+            android:text="@string/aggiungi" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:visibility="gone" />
     </LinearLayout>
 </ScrollView>

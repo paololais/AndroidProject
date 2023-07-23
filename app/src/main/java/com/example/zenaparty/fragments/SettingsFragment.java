@@ -2,16 +2,17 @@ package com.example.zenaparty.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.zenaparty.R;
 import com.example.zenaparty.activities.LogActivity;
@@ -21,7 +22,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class SettingsFragment extends Fragment {
 
-    Button logoutButton;
+    RelativeLayout logoutButton;
+    RelativeLayout modificaProf;
 
     FirebaseUser user;
 
@@ -42,15 +44,24 @@ public class SettingsFragment extends Fragment {
         logoutButton = view.findViewById(R.id.logoutButton);
         user = auth.getCurrentUser();
 
+        ImageView goBack = view.findViewById(R.id.goBackBtn);
+        goBack.setOnClickListener(view1 -> requireActivity().onBackPressed());
 
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getActivity(), LogActivity.class);
-                startActivity(intent);
-                getActivity().finish();
-            }
+        modificaProf = view.findViewById(R.id.modificaprofilo);
+
+        modificaProf.setOnClickListener(view1 -> {
+            ModificaProFiloFragment modificaProFiloFragment = new ModificaProFiloFragment();
+            FragmentManager fragmentManager = getParentFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.flFragment, modificaProFiloFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        });
+        logoutButton.setOnClickListener(view12 -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(getActivity(), LogActivity.class);
+            startActivity(intent);
+            requireActivity().finish();
         });
     }
 }
