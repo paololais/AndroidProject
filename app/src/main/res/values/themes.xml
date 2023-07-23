@@ -13,4 +13,12 @@
         <item name="android:statusBarColor">@color/black</item>
         <!-- Customize your theme here. -->
     </style>
+    
+   <!-- nel caso vogliamo cambiare colore dello switch -->
+
+   <style name="notificationSwitch" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/notification</item>
+        <item name="colorSwitchThumbNormal">@color/white</item>
+        <item name="android:colorForeground">@color/black</item>
+    </style>
 </resources>
