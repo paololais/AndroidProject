@@ -1,7 +1,5 @@
 package com.example.zenaparty.fragments;
 
-import static androidx.core.content.ContextCompat.getSystemService;
-
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,44 +35,35 @@ public class LoginFragment extends LogFragment {
             View externalView = inflater.inflate(R.layout.fragment_login, container, false);
 
             TextView link = externalView.findViewById(R.id.switchLoginToRegisterLabel);
-            link.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((LogActivity)LoginFragment.this.requireActivity()).renderFragment(false);
-                }
-            });
+            link.setOnClickListener(view -> ((LogActivity)LoginFragment.this.requireActivity()).renderFragment(false));
 
             Button button = externalView.findViewById(R.id.buttonLogin);
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    EditText email = externalView.findViewById(R.id.etEmail);
-                    EditText password = externalView.findViewById(R.id.etPassword);
-                    ProgressBar progressBar = externalView.findViewById(R.id.progressBar);
+            button.setOnClickListener(view -> {
+                EditText email = externalView.findViewById(R.id.etEmail);
+                EditText password = externalView.findViewById(R.id.etPassword);
+                ProgressBar progressBar = externalView.findViewById(R.id.progressBar);
 
-                    // hide keyboard
-                    InputMethodManager manager = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                // hide keyboard
+                InputMethodManager manager = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
-                    if (email.getText().toString().isEmpty() || password.getText().toString().isEmpty()) {
-                        // TODO: Better error handling + remove this hardcoded strings
-                        email.setError("Email is required");
-                        password.setError("Password is required");
-                        return;
-                    }
-
-                    // Perform SignIn
-                    FirebaseWrapper.Auth auth = new FirebaseWrapper.Auth();
-                    auth.signIn(
-                            email.getText().toString(),
-                            password.getText().toString(),
-                            progressBar,
-                            FirebaseWrapper.Callback
-                                    .newInstance(LoginFragment.this.requireActivity(),
-                                            LoginFragment.this.callbackName,
-                                            LoginFragment.this.callbackPrms)
-                    );
+                if (email.getText().toString().isEmpty() || password.getText().toString().isEmpty()) {
+                    email.setError("Email is required");
+                    password.setError("Password is required");
+                    return;
                 }
+
+                // Perform SignIn
+                FirebaseWrapper.Auth auth = new FirebaseWrapper.Auth();
+                auth.signIn(
+                        email.getText().toString(),
+                        password.getText().toString(),
+                        progressBar,
+                        FirebaseWrapper.Callback
+                                .newInstance(LoginFragment.this.requireActivity(),
+                                        LoginFragment.this.callbackName,
+                                        LoginFragment.this.callbackPrms)
+                );
             });
 
             return externalView;

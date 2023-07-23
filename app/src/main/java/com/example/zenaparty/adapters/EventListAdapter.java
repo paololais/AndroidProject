@@ -1,8 +1,6 @@
 package com.example.zenaparty.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,7 +63,6 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
 
         TextView event_name, time, location, type, price;
         ImageButton btnDelete;
-        private boolean showButton;
 
         public MyViewHolder(@NonNull View itemView, EventListInterface eventListInterface) {
             super(itemView);
@@ -77,27 +74,21 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
             price = itemView.findViewById(R.id.eventPrice);
             btnDelete = itemView.findViewById(R.id.btnDelete);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (eventListInterface != null){
-                        int pos = getAdapterPosition();
+            itemView.setOnClickListener(view -> {
+                if (eventListInterface != null){
+                    int pos = getAdapterPosition();
 
-                        if(pos != RecyclerView.NO_POSITION){
-                            eventListInterface.onItemClick(pos);
-                        }
+                    if(pos != RecyclerView.NO_POSITION){
+                        eventListInterface.onItemClick(pos);
                     }
                 }
             });
 
 
-            btnDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        eventListInterface.onButtonActionClick(position);
-                    }
+            btnDelete.setOnClickListener(view -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    eventListInterface.onButtonActionClick(position);
                 }
             });
         }
