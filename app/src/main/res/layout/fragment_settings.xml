@@ -44,7 +44,7 @@
             android:id="@+id/notification_Icon"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@color/notification"
+            android:background="@color/GIALLO"
             android:padding="7dp"
             android:src="@drawable/notifications_icon"
             tools:ignore="ContentDescription,ImageContrastCheck" />
@@ -84,7 +84,7 @@
             android:id="@+id/edit_icon"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@color/GIALLO"
+            android:background="@color/green"
             android:src="@drawable/ic_edit_foreground"
             tools:ignore="ContentDescription,ImageContrastCheck" />
 
@@ -122,7 +122,7 @@
             android:id="@+id/logout_icon"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@color/GIALLO"
+            android:background="#D84C4C"
             android:src="@drawable/ic_logout_foreground"
             tools:ignore="ContentDescription,ImageContrastCheck" />
 
