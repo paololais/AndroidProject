@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     FirebaseAuth auth;
     FirebaseUser user;
     boolean notificheBool;
-    private SharedPreferences sharedPreferences;
     BottomNavigationView bottomNavigationView;
     HomeFragment homeFragment = new HomeFragment();
     AddEventFragment addEventFragment = new AddEventFragment();
@@ -60,9 +59,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             finish();
         }
 
-        sharedPreferences = this.getSharedPreferences("SavedValues", Context.MODE_PRIVATE);
-        notificheBool = sharedPreferences.getBoolean("Notifiche", true);
-
         NotificationChannel channel = new NotificationChannel("zena_party", "zena_party", NotificationManager.IMPORTANCE_MIN);
         channel.setDescription("zena_party");
         NotificationManager manager = getSystemService(NotificationManager.class);
@@ -73,9 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         bottomNavigationView.setOnItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.home);
 
-        if (notificheBool){
-            schedulePeriodicWorker();
-        }
+        schedulePeriodicWorker();
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item)

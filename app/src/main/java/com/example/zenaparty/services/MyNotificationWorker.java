@@ -26,6 +26,12 @@ public class MyNotificationWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
+        boolean controlFlag = this.getApplicationContext().getSharedPreferences("SavedValues", Context.MODE_PRIVATE).getBoolean("Notifiche", true);
+
+        if (!controlFlag) {
+            return Result.success();
+        }
+
         //test log
         System.out.println("MyNotificationWorker.startWork()");
         Log.d("MyNotificationWorker", "startWork()");
