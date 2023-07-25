@@ -32,6 +32,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -138,7 +141,7 @@ public class EventOpenedFragment extends Fragment {
         ProgressBar progressBar = view.findViewById(R.id.progressBar);
         ImageView weatherIconImageView = view.findViewById(R.id.weatherIcon);
 
-        fetchWeatherDataAndDisplay(progressBar, weatherIconImageView);
+        fetchWeatherDataAndDisplay(progressBar, weatherIconImageView, eventDate);
     }
 
     private void openLocationInMaps() {
@@ -269,7 +272,7 @@ public class EventOpenedFragment extends Fragment {
     }
 
 
-    private void fetchWeatherDataAndDisplay(ProgressBar progressBar, ImageView weatherIconImageView) {
+    private void fetchWeatherDataAndDisplay(ProgressBar progressBar, ImageView weatherIconImageView, String eventDate) {
         // Replace the API URL with the correct one
         String apiUrl = "http://api.weatherstack.com/current?access_key=9a6fb4601b803613be5365e4f973d1fa&query=genoa";
         Retrofit retrofit = new Retrofit.Builder()
@@ -277,13 +280,43 @@ public class EventOpenedFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
+
+
         WeatherApiService weatherApiService = retrofit.create(WeatherApiService.class);
-        Call<WeatherResponse> call = weatherApiService.getWeatherData();
+
+        //calculate the current date
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        String currentDate = formatter.format(date);
+        long daysBetween = 0;
+        //get days between current date and event date
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            daysBetween = ChronoUnit.DAYS.between(LocalDate.parse(currentDate, DateTimeFormatter.ofPattern("dd-MM-yyyy")),
+                    LocalDate.parse(eventDate, DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+
+        }
+
+        if (daysBetween < 0) {
+            daysBetween = 0;
+        }
+
+        if (daysBetween > 14) {
+            daysBetween = 14;
+        }
+
+        Log.d("Weather", "Days between: " + daysBetween);
+
+        Call<WeatherResponse> call = weatherApiService.getWeatherData((int) daysBetween);
         call.enqueue(new Callback<WeatherResponse>() {
             @Override
             public void onResponse(@NonNull Call<WeatherResponse> call, @NonNull Response<WeatherResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
+                // Handle API call success (e.g., display the data)
+                // log the response
+                Log.d("Weather", "Response received: " + response.body());
+                if (response.isSuccessful() && response.body() != null && response.body().getCurrent() != null) {
                     WeatherResponse weatherResponse = response.body();
+                    Log.d("Weather", "Weather data received: " + weatherResponse.getCurrent());
+
                     String temperature = weatherResponse.getCurrent().getTemperature() + "°C";
                     String weatherIconUrl = weatherResponse.getCurrent().getWeatherIcons().get(0);
 
