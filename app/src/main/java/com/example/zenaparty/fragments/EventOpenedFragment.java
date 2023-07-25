@@ -249,8 +249,7 @@ public class EventOpenedFragment extends Fragment {
             calendar1.set(Calendar.MILLISECOND, 0);
 
             // Ottieni il timestamp in millisecondi
-            long startDateInMillis = calendar1.getTimeInMillis();
-            return startDateInMillis;
+            return calendar1.getTimeInMillis();
         } catch (ParseException e) {
             e.printStackTrace();
         }
