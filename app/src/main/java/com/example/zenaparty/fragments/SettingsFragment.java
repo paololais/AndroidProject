@@ -83,4 +83,11 @@ public class SettingsFragment extends Fragment {
             }
         });
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("Notifiche", notificheBool);
+    }
 }
