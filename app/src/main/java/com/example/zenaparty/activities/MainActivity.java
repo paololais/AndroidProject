@@ -1,23 +1,35 @@
 package com.example.zenaparty.activities;
 
+import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.example.zenaparty.R;
 import com.example.zenaparty.fragments.AddEventFragment;
 import com.example.zenaparty.fragments.HomeFragment;
 import com.example.zenaparty.fragments.MapsFragment;
 import com.example.zenaparty.fragments.ProfileFragment;
+import com.example.zenaparty.services.MyNotificationWorker;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener{
     FirebaseAuth auth;
@@ -28,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     MapsFragment mapFragment = new MapsFragment();
     AddEventFragment addEventFragment = new AddEventFragment();
     ProfileFragment profileFragment = new ProfileFragment();
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,8 +59,17 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             startActivity(intent);
             finish();
         }
+
+        NotificationChannel channel = new NotificationChannel("zena_party", "zena_party", NotificationManager.IMPORTANCE_MIN);
+        channel.setDescription("zena_party");
+        NotificationManager manager = getSystemService(NotificationManager.class);
+        manager.createNotificationChannel(channel);
+
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
+
         bottomNavigationView.setOnItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.home);
+        schedulePeriodicWorker();
 
 
 
@@ -87,4 +109,17 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         }
         return false;
     }
+
+    private void schedulePeriodicWorker() {
+            PeriodicWorkRequest  periodicWork = new PeriodicWorkRequest.Builder(
+                    MyNotificationWorker.class,
+                    10, TimeUnit.HOURS)
+                    .build();
+
+                WorkManager.getInstance(MainActivity.this).enqueue(periodicWork);
+    }
+
+
+
+
 }
