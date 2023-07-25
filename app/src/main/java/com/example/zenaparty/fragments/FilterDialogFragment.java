@@ -41,30 +41,24 @@ public class FilterDialogFragment extends androidx.fragment.app.DialogFragment{
         TextView mActionOk = dialogView.findViewById(R.id.action_ok);
 
         mActionCancel.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Log.d(TAG, "onClick: closing dialog");
-                        Objects.requireNonNull(getDialog()).dismiss();
-                    }
+                v -> {
+                    Log.d(TAG, "onClick: closing dialog");
+                    Objects.requireNonNull(getDialog()).dismiss();
                 });
 
         mActionOk.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Log.d(TAG, "onClick: capturing input");
-                        boolean filterParties = cbParties.isChecked();
-                        boolean filterFestivals = cbSagre.isChecked();
-                        boolean filterMusic = cbMusic.isChecked();
-                        boolean filterSport = cbSport.isChecked();
-                        boolean filterOther = cbOther.isChecked();
+                v -> {
+                    Log.d(TAG, "onClick: capturing input");
+                    boolean filterParties = cbParties.isChecked();
+                    boolean filterFestivals = cbSagre.isChecked();
+                    boolean filterMusic = cbMusic.isChecked();
+                    boolean filterSport = cbSport.isChecked();
+                    boolean filterOther = cbOther.isChecked();
 
-                        if (listener != null) {
-                            listener.onCheckboxSelected(filterParties, filterFestivals, filterMusic, filterSport, filterOther);
-                        }
-                        Objects.requireNonNull(getDialog()).dismiss();
+                    if (listener != null) {
+                        listener.onCheckboxSelected(filterParties, filterFestivals, filterMusic, filterSport, filterOther);
                     }
+                    Objects.requireNonNull(getDialog()).dismiss();
                 });
         return dialogView;
     }

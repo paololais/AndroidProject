@@ -1,5 +1,6 @@
 package com.example.zenaparty.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -67,6 +67,7 @@ public class HomeFragment extends Fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -132,72 +133,50 @@ public class HomeFragment extends Fragment
         }
 
 
-        tvSelectDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        tvSelectDate.setOnClickListener(v -> {
 
-                DatePickerDialog dialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        calendar.set(year, month, dayOfMonth);
+            DatePickerDialog dialog = new DatePickerDialog(getActivity(), (view1, year, month, dayOfMonth) -> {
+                calendar.set(year, month, dayOfMonth);
 
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE d MMMM", Locale.getDefault());
-                        formattedDate = dateFormat.format(calendar.getTime());
-                        tvSelectDate.setText(formattedDate);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("EEE d MMMM", Locale.getDefault());
+                formattedDate = dateFormat.format(calendar.getTime());
+                tvSelectDate.setText(formattedDate);
 
-                        // metodo per filtrare gli eventi in base alla data selezionata
-                        SimpleDateFormat newFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                        newFormattedDate = newFormat.format(calendar.getTime());
-                        filterEventsByType();
-                    }
-                },year, month,day);
-                dialog.show();
+                // metodo per filtrare gli eventi in base alla data selezionata
+                SimpleDateFormat newFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                newFormattedDate = newFormat.format(calendar.getTime());
+                filterEventsByType();
+            },year, month,day);
+            dialog.show();
 
-            }
         });
         // Listener per il pulsante per aumentare il giorno
-        btnIncreaseDay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                calendar.add(Calendar.DAY_OF_MONTH, 1);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("EEE d MMMM", Locale.getDefault());
-                formattedDate = dateFormat.format(calendar.getTime());
-                tvSelectDate.setText(formattedDate);
+        btnIncreaseDay.setOnClickListener(v -> {
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE d MMMM", Locale.getDefault());
+            formattedDate = dateFormat.format(calendar.getTime());
+            tvSelectDate.setText(formattedDate);
 
-                // metodo per filtrare gli eventi in base alla data selezionata
-                SimpleDateFormat newFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                newFormattedDate = newFormat.format(calendar.getTime());
-                filterEventsByType();
-            }
+            // metodo per filtrare gli eventi in base alla data selezionata
+            SimpleDateFormat newFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+            newFormattedDate = newFormat.format(calendar.getTime());
+            filterEventsByType();
         });
         // Listener per il pulsante per decrementare il giorno
-        btnDecreaseDay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                calendar.add(Calendar.DAY_OF_MONTH, -1);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("EEE d MMMM", Locale.getDefault());
-                formattedDate = dateFormat.format(calendar.getTime());
-                tvSelectDate.setText(formattedDate);
+        btnDecreaseDay.setOnClickListener(v -> {
+            calendar.add(Calendar.DAY_OF_MONTH, -1);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE d MMMM", Locale.getDefault());
+            formattedDate = dateFormat.format(calendar.getTime());
+            tvSelectDate.setText(formattedDate);
 
-                // metodo per filtrare gli eventi in base alla data selezionata
-                SimpleDateFormat newFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                newFormattedDate = newFormat.format(calendar.getTime());
-                filterEventsByType();
-            }
+            // metodo per filtrare gli eventi in base alla data selezionata
+            SimpleDateFormat newFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+            newFormattedDate = newFormat.format(calendar.getTime());
+            filterEventsByType();
         });
-        btnFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openFilterDialog();
-            }
-        });
+        btnFilter.setOnClickListener(view13 -> openFilterDialog());
 
-        btnRefresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                readDatabase(database);
-            }
-        });
+        btnRefresh.setOnClickListener(view12 -> readDatabase(database));
     }
 
     private void openFilterDialog(){
@@ -207,6 +186,7 @@ public class HomeFragment extends Fragment
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     private void filterEventsByDate(String selectedDate) {
         ArrayList<MyEvent> filteredList = new ArrayList<>();
 
@@ -226,6 +206,7 @@ public class HomeFragment extends Fragment
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void filterEventsByType() {
         ArrayList<MyEvent> filteredList = new ArrayList<>();
 
@@ -290,6 +271,7 @@ public class HomeFragment extends Fragment
         progressBar.setVisibility(View.VISIBLE);
 
         db.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();

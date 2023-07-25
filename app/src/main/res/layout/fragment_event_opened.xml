@@ -78,7 +78,8 @@
             android:scaleX="0.7"
             android:scaleY="0.7"
             app:layout_constraintStart_toEndOf="@+id/btnMaps"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
 
         <ImageButton
             android:id="@+id/btnClose"
@@ -101,7 +102,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/bangers"
             android:letterSpacing="0.05"
-            android:text="Nome Evento"
+            android:text="@string/nome_evento"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="27sp"

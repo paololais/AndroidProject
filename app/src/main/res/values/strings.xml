@@ -62,4 +62,6 @@
     <string name="data_inizio_evento">Data Inizio Evento</string>
     <string name="ora_inizio_evento">Ora Inizio Evento</string>
     <string name="aggiungi">Aggiungi</string>
+    <string name="home">Home</string>
+    <string name="add_event">Add Event</string>
 </resources>

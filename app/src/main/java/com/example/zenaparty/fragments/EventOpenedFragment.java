@@ -278,7 +278,7 @@ public class EventOpenedFragment extends Fragment {
         Call<WeatherResponse> call = weatherApiService.getWeatherData();
         call.enqueue(new Callback<WeatherResponse>() {
             @Override
-            public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
+            public void onResponse(@NonNull Call<WeatherResponse> call, @NonNull Response<WeatherResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     WeatherResponse weatherResponse = response.body();
                     String temperature = weatherResponse.getCurrent().getTemperature() + "°C";
@@ -291,10 +291,10 @@ public class EventOpenedFragment extends Fragment {
 //                    TextView temperatureTextView = getView().findViewById(R.id.eventTemperature);
 //                    temperatureTextView.setText(temperature);
 
-                    ProgressBar progressBar = getView().findViewById(R.id.progressBar);
+                    ProgressBar progressBar = requireView().findViewById(R.id.progressBar);
                     progressBar.setVisibility(View.GONE);
 
-                    ImageView weatherIconImageView = getView().findViewById(R.id.weatherIcon);
+                    ImageView weatherIconImageView = requireView().findViewById(R.id.weatherIcon);
                     Glide.with(requireContext()).load(weatherIconUrl).into(weatherIconImageView);
 
 
@@ -302,7 +302,7 @@ public class EventOpenedFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<WeatherResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<WeatherResponse> call, @NonNull Throwable t) {
                 // Handle API call failure (e.g., show an error message)
                 Log.e("Weather", "Error while getting weather data", t);
             }

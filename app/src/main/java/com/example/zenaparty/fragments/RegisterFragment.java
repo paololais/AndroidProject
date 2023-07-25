@@ -45,71 +45,63 @@ public class RegisterFragment extends LogFragment {
         View externalView = inflater.inflate(R.layout.fragment_register, container, false);
 
         TextView link = externalView.findViewById(R.id.switchRegisterToLoginLabel);
-        link.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((LogActivity) RegisterFragment.this.requireActivity()).renderFragment(true);
-            }
-        });
+        link.setOnClickListener(view -> ((LogActivity) RegisterFragment.this.requireActivity()).renderFragment(true));
 
         Button button = externalView.findViewById(R.id.buttonRegister);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EditText email = externalView.findViewById(R.id.etEmail);
-                EditText password = externalView.findViewById(R.id.etPassword1);
-                EditText password2 = externalView.findViewById(R.id.etPassword2);
-                EditText username = externalView.findViewById(R.id.etUsername);
-                ProgressBar progressBar = externalView.findViewById(R.id.progressBar);
+        button.setOnClickListener(view -> {
+            EditText email = externalView.findViewById(R.id.etEmail);
+            EditText password = externalView.findViewById(R.id.etPassword1);
+            EditText password2 = externalView.findViewById(R.id.etPassword2);
+            EditText username = externalView.findViewById(R.id.etUsername);
+            ProgressBar progressBar = externalView.findViewById(R.id.progressBar);
 
-                // hide keyboard
-                InputMethodManager manager = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            // hide keyboard
+            InputMethodManager manager = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
-                if (email.getText().toString().isEmpty() ||
-                        password.getText().toString().isEmpty() ||
-                        password2.getText().toString().isEmpty() ||
-                        username.getText().toString().isEmpty()) {
-                    // TODO: Better error handling + remove this hardcoded strings
-                    email.setError("Email is required");
-                    password.setError("Password is required");
-                    password2.setError("Password is required");
-                    username.setError("Username is required");
-                    return;
-                }
-
-                if (!password.getText().toString().equals(password2.getText().toString())) {
-                    // TODO: Better error handling + remove this hardcoded strings
-                    Toast
-                            .makeText(RegisterFragment.this.requireActivity(), "Passwords are different", Toast.LENGTH_LONG)
-                            .show();
-                    return;
-                }
-
-                // Verifica la disponibilità dello username
-                checkUsernameAvailability(username.getText().toString(), isUsernameAvailable -> {
-                    if (isUsernameAvailable) {
-                        // Lo username è disponibile, procedi con la registrazione
-                        FirebaseWrapper.Auth auth = new FirebaseWrapper.Auth();
-                        auth.signUp(
-                                email.getText().toString(),
-                                password.getText().toString(),
-                                username.getText().toString(),
-                                progressBar,
-                                FirebaseWrapper.Callback
-                                        .newInstance(RegisterFragment.this.requireActivity(),
-                                                RegisterFragment.this.callbackName,
-                                                RegisterFragment.this.callbackPrms)
-                        );
-                    } else {
-                        // Lo username non è disponibile, mostra un errore
-                        Toast
-                                .makeText(RegisterFragment.this.requireActivity(), "Username chosen is not available", Toast.LENGTH_SHORT)
-                                .show();
-                        username.setError("Username chosen is not available");
-                    }
-                });
+            if (email.getText().toString().isEmpty() ||
+                    password.getText().toString().isEmpty() ||
+                    password2.getText().toString().isEmpty() ||
+                    username.getText().toString().isEmpty()) {
+                // TODO: Better error handling + remove this hardcoded strings
+                email.setError("Email is required");
+                password.setError("Password is required");
+                password2.setError("Password is required");
+                username.setError("Username is required");
+                return;
             }
+
+            if (!password.getText().toString().equals(password2.getText().toString())) {
+                // TODO: Better error handling + remove this hardcoded strings
+                Toast
+                        .makeText(RegisterFragment.this.requireActivity(), "Passwords are different", Toast.LENGTH_LONG)
+                        .show();
+                return;
+            }
+
+            // Verifica la disponibilità dello username
+            checkUsernameAvailability(username.getText().toString(), isUsernameAvailable -> {
+                if (isUsernameAvailable) {
+                    // Lo username è disponibile, procedi con la registrazione
+                    FirebaseWrapper.Auth auth = new FirebaseWrapper.Auth();
+                    auth.signUp(
+                            email.getText().toString(),
+                            password.getText().toString(),
+                            username.getText().toString(),
+                            progressBar,
+                            FirebaseWrapper.Callback
+                                    .newInstance(RegisterFragment.this.requireActivity(),
+                                            RegisterFragment.this.callbackName,
+                                            RegisterFragment.this.callbackPrms)
+                    );
+                } else {
+                    // Lo username non è disponibile, mostra un errore
+                    Toast
+                            .makeText(RegisterFragment.this.requireActivity(), "Username chosen is not available", Toast.LENGTH_SHORT)
+                            .show();
+                    username.setError("Username chosen is not available");
+                }
+            });
         });
 
         return externalView;

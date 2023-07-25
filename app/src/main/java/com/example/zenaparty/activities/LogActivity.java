@@ -14,6 +14,8 @@ import com.example.zenaparty.fragments.LoginFragment;
 import com.example.zenaparty.R;
 import com.example.zenaparty.fragments.RegisterFragment;
 
+import java.util.Objects;
+
 public class LogActivity extends AppCompatActivity{
     private static final String TAG = LogActivity.class.getCanonicalName();
 
@@ -25,7 +27,7 @@ public class LogActivity extends AppCompatActivity{
         setContentView(R.layout.activity_log);
 
         //hide actionbar
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         // TODO: Render fragment
         // Render fragment

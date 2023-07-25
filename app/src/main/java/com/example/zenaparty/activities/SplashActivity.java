@@ -58,13 +58,10 @@ public class SplashActivity extends AppCompatActivity {
         }
 
         // Add the listener to the 'Grant Now' permission
-        this.findViewById(R.id.grantPermission).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!pm.askNeededPermissions(PERMISSION_REQUEST_CODE, true)) {
-                    // Go to MainActivity
-                    SplashActivity.this.goToActivity(MainActivity.class);
-                }
+        this.findViewById(R.id.grantPermission).setOnClickListener(view -> {
+            if (!pm.askNeededPermissions(PERMISSION_REQUEST_CODE, true)) {
+                // Go to MainActivity
+                SplashActivity.this.goToActivity(MainActivity.class);
             }
         });
     }

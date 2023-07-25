@@ -1,11 +1,10 @@
 package com.example.zenaparty.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -14,8 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -35,7 +32,6 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener{
     FirebaseAuth auth;
     FirebaseUser user;
-    boolean notificheBool;
     BottomNavigationView bottomNavigationView;
     HomeFragment homeFragment = new HomeFragment();
     AddEventFragment addEventFragment = new AddEventFragment();
@@ -71,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
         schedulePeriodicWorker();
     }
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item)
     {
@@ -103,9 +100,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     private void schedulePeriodicWorker() {
             PeriodicWorkRequest  periodicWork = new PeriodicWorkRequest.Builder(
                     MyNotificationWorker.class,
-                    10, TimeUnit.HOURS,
-                    5, TimeUnit.HOURS
-            )
+                    10, TimeUnit.HOURS)
                     .build();
 
                 WorkManager.getInstance(MainActivity.this).enqueue(periodicWork);
