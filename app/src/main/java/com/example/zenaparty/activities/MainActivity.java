@@ -3,7 +3,9 @@ package com.example.zenaparty.activities;
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -33,7 +35,8 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener{
     FirebaseAuth auth;
     FirebaseUser user;
-
+    boolean notificheBool;
+    private SharedPreferences sharedPreferences;
     BottomNavigationView bottomNavigationView;
     HomeFragment homeFragment = new HomeFragment();
     AddEventFragment addEventFragment = new AddEventFragment();
@@ -47,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         Objects.requireNonNull(getSupportActionBar()).show();
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher_foreground);
-
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         auth = FirebaseAuth.getInstance();
@@ -58,6 +60,9 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             finish();
         }
 
+        sharedPreferences = this.getSharedPreferences("SavedValues", Context.MODE_PRIVATE);
+        notificheBool = sharedPreferences.getBoolean("Notifiche", true);
+
         NotificationChannel channel = new NotificationChannel("zena_party", "zena_party", NotificationManager.IMPORTANCE_MIN);
         channel.setDescription("zena_party");
         NotificationManager manager = getSystemService(NotificationManager.class);
@@ -67,10 +72,10 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
         bottomNavigationView.setOnItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.home);
-        schedulePeriodicWorker();
 
-
-
+        if (notificheBool){
+            schedulePeriodicWorker();
+        }
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item)
