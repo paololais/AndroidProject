@@ -135,7 +135,10 @@ public class EventOpenedFragment extends Fragment {
         btnAddToCalendar.setOnClickListener(view13 -> addEventToCalendar());
         btnMaps.setOnClickListener(view14 -> openLocationInMaps());
 
-        fetchWeatherDataAndDisplay();
+        ProgressBar progressBar = view.findViewById(R.id.progressBar);
+        ImageView weatherIconImageView = view.findViewById(R.id.weatherIcon);
+
+        fetchWeatherDataAndDisplay(progressBar, weatherIconImageView);
     }
 
     private void openLocationInMaps() {
@@ -266,7 +269,7 @@ public class EventOpenedFragment extends Fragment {
     }
 
 
-    private void fetchWeatherDataAndDisplay() {
+    private void fetchWeatherDataAndDisplay(ProgressBar progressBar, ImageView weatherIconImageView) {
         // Replace the API URL with the correct one
         String apiUrl = "http://api.weatherstack.com/current?access_key=9a6fb4601b803613be5365e4f973d1fa&query=genoa";
         Retrofit retrofit = new Retrofit.Builder()
@@ -287,17 +290,9 @@ public class EventOpenedFragment extends Fragment {
                     Log.d("Weather", "Temperature: " + temperature);
                     Log.d("Weather", "Weather icon URL: " + weatherIconUrl);
 
-                    // Update the UI with the fetched data
-//                    TextView temperatureTextView = getView().findViewById(R.id.eventTemperature);
-//                    temperatureTextView.setText(temperature);
-
-                    ProgressBar progressBar = requireView().findViewById(R.id.progressBar);
                     progressBar.setVisibility(View.GONE);
 
-                    ImageView weatherIconImageView = requireView().findViewById(R.id.weatherIcon);
                     Glide.with(requireContext()).load(weatherIconUrl).into(weatherIconImageView);
-
-
                 }
             }
 
