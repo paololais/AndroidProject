@@ -22,7 +22,6 @@
             app:tint="@color/black"
             tools:ignore="ContentDescription" />
         <TextView
-            android:id="@+id/settingsFragment"
             android:layout_toEndOf="@id/goBackBtn"
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"

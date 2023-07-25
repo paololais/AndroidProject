@@ -77,7 +77,6 @@
             android:importantForAutofill="no" />
 
         <TextView
-            android:id="@+id/addEventDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -96,7 +95,6 @@
             android:spinnersShown="true" />
 
         <TextView
-            android:id="@+id/addEventTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -113,7 +111,6 @@
             android:timePickerMode="spinner" />
 
         <TextView
-            android:id="@+id/addEventEndDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

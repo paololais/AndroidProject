@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyViewHolder> {
-    Context context;
+    final Context context;
     ArrayList<MyEvent> list;
     boolean visibility;
     private final EventListInterface eventListInterface;
