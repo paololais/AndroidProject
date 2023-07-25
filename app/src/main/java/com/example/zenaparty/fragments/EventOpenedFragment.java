@@ -51,7 +51,6 @@ public class EventOpenedFragment extends Fragment {
     boolean isFavorite = false;
     String eventId;
     String title, eventDate, startTime, position;
-    long startDateInMillis;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -212,31 +211,18 @@ public class EventOpenedFragment extends Fragment {
         intent.putExtra(CalendarContract.Events.TITLE, title);
         intent.putExtra(CalendarContract.Events.EVENT_LOCATION, position);
         intent.putExtra(CalendarContract.Events.CALENDAR_ID, 1); // ID del calendario. Puoi ottenere l'ID del calendario desiderato.
-        convertDateAndTimeInMillis();
-        intent.putExtra(CalendarContract.Events.DTSTART, startDateInMillis); // Data e ora di inizio dell'evento in millisecondi
-
+        long startDateInMillis = getDateAndTimeInMillis();
+        intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startDateInMillis); // Imposta la data e ora di inizio dell'evento
         // Supponiamo di avere una durata dell'evento in minuti
-        int eventDurationMinutes = 60;
+        int eventDurationMinutes = 180;
         // Calcola la durata in millisecondi
         long eventDurationMillis = eventDurationMinutes * 60 * 1000;
-        // Imposta la durata nell'oggetto ContentValues
-        intent.putExtra(CalendarContract.Events.DURATION, "PT" + eventDurationMillis + "M");
+        intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, startDateInMillis + eventDurationMillis); // Imposta la data e ora di fine dell'evento (3 ore dopo)
 
         startActivity(intent);
-
-        /*
-        // Verifica se esiste un'app che può gestire l'Intent
-        if (intent.resolveActivity(requireContext().getPackageManager()) != null) {
-            // Avvia l'Intent per aprire l'app di Google Maps
-            startActivity(intent);
-        } else {
-            // Non è disponibile app di maps: messaggio di errore
-            Toast.makeText(getContext(), "App Google Calendar non disponibile", Toast.LENGTH_SHORT).show();
-        }
-        */
     }
 
-    void convertDateAndTimeInMillis(){
+    long getDateAndTimeInMillis(){
         // Imposta il formato della data
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy", Locale.getDefault());
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
@@ -246,29 +232,29 @@ public class EventOpenedFragment extends Fragment {
             Date time = timeFormat.parse(startTime);
 
             // Crea un'istanza di Calendar e imposta l'ora
-            Calendar calendar = Calendar.getInstance();
+            Calendar calendar1 = Calendar.getInstance();
             assert date != null;
-            calendar.setTime(date);
+            calendar1.setTime(date);
 
             Calendar timeCalendar = Calendar.getInstance();
             assert time != null;
             timeCalendar.setTime(time);
 
             // Ottieni il timestamp in millisecondi
-            calendar.set(Calendar.HOUR_OF_DAY, timeCalendar.get(Calendar.HOUR_OF_DAY));
-            calendar.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
+            calendar1.set(Calendar.HOUR_OF_DAY, timeCalendar.get(Calendar.HOUR_OF_DAY));
+            calendar1.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE));
 
             // Imposta i secondi e i millisecondi a 0
-            calendar.set(Calendar.SECOND, 0);
-            calendar.set(Calendar.MILLISECOND, 0);
+            calendar1.set(Calendar.SECOND, 0);
+            calendar1.set(Calendar.MILLISECOND, 0);
 
             // Ottieni il timestamp in millisecondi
-            startDateInMillis = calendar.getTimeInMillis();
-
-
+            long startDateInMillis = calendar1.getTimeInMillis();
+            return startDateInMillis;
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        return  System.currentTimeMillis();
     }
 
 
