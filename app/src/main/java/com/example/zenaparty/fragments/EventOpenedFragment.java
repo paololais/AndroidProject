@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,8 +18,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.zenaparty.R;
 import com.example.zenaparty.models.MyEvent;
+import com.example.zenaparty.models.WeatherApiService;
+import com.example.zenaparty.models.WeatherResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,6 +36,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class EventOpenedFragment extends Fragment {
 
@@ -123,6 +134,8 @@ public class EventOpenedFragment extends Fragment {
 
         btnAddToCalendar.setOnClickListener(view13 -> addEventToCalendar());
         btnMaps.setOnClickListener(view14 -> openLocationInMaps());
+
+        fetchWeatherDataAndDisplay();
     }
 
     private void openLocationInMaps() {
@@ -250,5 +263,49 @@ public class EventOpenedFragment extends Fragment {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+
+    private void fetchWeatherDataAndDisplay() {
+        // Replace the API URL with the correct one
+        String apiUrl = "http://api.weatherstack.com/current?access_key=9a6fb4601b803613be5365e4f973d1fa&query=genoa";
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://api.weatherstack.com/") // Base URL of the API
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        WeatherApiService weatherApiService = retrofit.create(WeatherApiService.class);
+        Call<WeatherResponse> call = weatherApiService.getWeatherData();
+        call.enqueue(new Callback<WeatherResponse>() {
+            @Override
+            public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    WeatherResponse weatherResponse = response.body();
+                    String temperature = weatherResponse.getCurrent().getTemperature() + "°C";
+                    String weatherIconUrl = weatherResponse.getCurrent().getWeatherIcons().get(0);
+
+                    Log.d("Weather", "Temperature: " + temperature);
+                    Log.d("Weather", "Weather icon URL: " + weatherIconUrl);
+
+                    // Update the UI with the fetched data
+//                    TextView temperatureTextView = getView().findViewById(R.id.eventTemperature);
+//                    temperatureTextView.setText(temperature);
+
+                    ProgressBar progressBar = getView().findViewById(R.id.progressBar);
+                    progressBar.setVisibility(View.GONE);
+
+                    ImageView weatherIconImageView = getView().findViewById(R.id.weatherIcon);
+                    Glide.with(requireContext()).load(weatherIconUrl).into(weatherIconImageView);
+
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WeatherResponse> call, Throwable t) {
+                // Handle API call failure (e.g., show an error message)
+                Log.e("Weather", "Error while getting weather data", t);
+            }
+        });
     }
 }
