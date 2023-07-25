@@ -103,7 +103,9 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     private void schedulePeriodicWorker() {
             PeriodicWorkRequest  periodicWork = new PeriodicWorkRequest.Builder(
                     MyNotificationWorker.class,
-                    10, TimeUnit.HOURS)
+                    10, TimeUnit.HOURS,
+                    5, TimeUnit.HOURS
+            )
                     .build();
 
                 WorkManager.getInstance(MainActivity.this).enqueue(periodicWork);

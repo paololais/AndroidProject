@@ -75,12 +75,13 @@ public class SettingsFragment extends Fragment {
             requireActivity().finish();
         });
 
-        notificheSwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean("Notifiche", notificheBool);
-            }
+        notificheSwitch.setChecked(sharedPreferences.getBoolean("Notifiche", true));
+
+        notificheSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+            notificheBool = b;
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("Notifiche", notificheBool);
+            editor.apply();
         });
     }
 
@@ -89,5 +90,6 @@ public class SettingsFragment extends Fragment {
         super.onPause();
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("Notifiche", notificheBool);
+        editor.apply();
     }
 }

@@ -29,6 +29,7 @@ public class MyNotificationWorker extends Worker {
         boolean controlFlag = this.getApplicationContext().getSharedPreferences("SavedValues", Context.MODE_PRIVATE).getBoolean("Notifiche", true);
 
         if (!controlFlag) {
+            Log.d("MyNotificationWorker", "Notifica Non Inviata");
             return Result.success();
         }
 
